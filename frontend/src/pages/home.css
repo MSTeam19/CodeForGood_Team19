@@ -1,0 +1,48 @@
+.home-root {
+  flex: 1;
+  width: 100vw;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+  /* Remove height: 100vh and width: 100vw */
+}
+
+.home-content {
+  width: 100%;
+  max-width: 800px;
+}
+
+.home-paper {
+  padding: 40px;
+  border-radius: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.home-title {
+  font-weight: 700;
+  color: #00796b;
+  margin-bottom: 24px;
+}
+
+.home-section-title {
+  font-weight: 600;
+  color: #0288d1;
+  margin-bottom: 16px;
+}
+
+.home-paper,
+.home-content,
+.home-get-involved {
+  color: #000; /* black */
+}
+
+.home-get-involved {
+  background: #e3f2fd;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+  margin-top: 24px;
+}
