@@ -3,12 +3,11 @@ const donationsTable = "donations";
 
 module.exports = {
 
-    async getAllUsers() {
+    async getAllDonations() {
         const { data, error } = await supabase
             .from(donationsTable)
             .select('*')
 
-        console.log(data)
         return data;
     },
 

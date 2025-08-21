@@ -3,12 +3,11 @@ const regionsTable = "regions";
 
 module.exports = {
 
-    async getAllUsers() {
+    async getAllRegions() {
         const { data, error } = await supabase
             .from(regionsTable)
             .select('*')
 
-        console.log(data)
         return data;
     },
 

@@ -8,7 +8,6 @@ module.exports = {
             .from(userTable)
             .select('*')
 
-        console.log(data)
         return data;
     },
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const user = require("../model/regions")
+const regions = require("../model/regions");
 
 router.get("/", async (req, res) => {
 
@@ -18,9 +18,9 @@ router.get("/all", async (req, res) => {
 
     try {
         
-        const allUsers = await user.getAllUsers();
+        const allRegion = await getAllRegions.getAllRegions();
 
-        res.status(200).json(allUsers);
+        res.status(200).json(allRegion);
 
     } catch (error) {
         res.status(500).json({ error: error.message })
