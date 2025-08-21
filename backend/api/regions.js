@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const user = require("../model/user")
+const user = require("../model/regions")
 
 router.get("/", async (req, res) => {
 
     try {
 
-        res.status(200).json('Health Check For User: Success!');
+        res.status(200).json('Health Check For Regions: Success!');
 
     } catch (error) {
         res.status(500).json({ error: error.message })
