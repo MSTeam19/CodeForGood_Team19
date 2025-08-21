@@ -18,7 +18,7 @@ router.get("/all", async (req, res) => {
 
     try {
         
-        const allRegion = await getAllRegions.getAllRegions();
+        const allRegion = await regions.getAllRegions();
 
         res.status(200).json(allRegion);
 
