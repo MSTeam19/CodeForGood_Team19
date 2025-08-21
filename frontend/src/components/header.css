@@ -1,0 +1,50 @@
+.header-bar {
+  background: #FFFDE7;
+  color: #00796b;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  width: 100%;
+}
+
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 72px;
+  padding: 0 32px;
+}
+
+.header-logo-title {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo {
+  height: 44px;
+  margin-right: 16px;
+  background: #fff;
+}
+
+.header-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.header-nav {
+  display: flex;
+  gap: 16px;
+}
+
+.header-btn {
+  color: #00796b;
+  background: transparent;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.header-btn:hover {
+  background: #e0f7fa;
+  color: #0288d1;
+}
