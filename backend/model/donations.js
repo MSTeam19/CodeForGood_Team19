@@ -1,11 +1,11 @@
 const { supabase } = require("../db/supabase");
-const userTable = "user";
+const donationsTable = "donations";
 
 module.exports = {
 
-    async getAllUsers() {
+    async getAllDonations() {
         const { data, error } = await supabase
-            .from(userTable)
+            .from(donationsTable)
             .select('*')
 
         return data;

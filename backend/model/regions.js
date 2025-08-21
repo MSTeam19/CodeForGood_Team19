@@ -1,11 +1,11 @@
 const { supabase } = require("../db/supabase");
-const userTable = "user";
+const regionsTable = "regions";
 
 module.exports = {
 
-    async getAllUsers() {
+    async getAllRegions() {
         const { data, error } = await supabase
-            .from(userTable)
+            .from(regionsTable)
             .select('*')
 
         return data;
