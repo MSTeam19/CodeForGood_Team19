@@ -7,9 +7,11 @@ import {
   DialogTitle,
   DialogActions,
   IconButton,
+  TextField,
+  TextareaAutosize,
 } from "@mui/material";
 import Button from "@mui/material/Button";
-import TextareaAutosize from "@mui/material/TextareaAutosize";
+// import TextareaAutosize from "@mui/material/TextareaAutosize";
 // import { X, ImageIcon } from "lucide-react";
 import Avatar from "@mui/material/Avatar";
 
@@ -20,6 +22,7 @@ interface CreatePostModalProps {
 
 export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
   const [caption, setCaption] = useState("");
+  const [name, setName] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +56,16 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
       <DialogTitle>Create New Post</DialogTitle>
 
       <DialogContent>
+        <div className="space-y-2">
+          <h3 className="font-semibold">Name</h3>
+          <TextField
+            id="name"
+            placeholder="Fill in your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full border rounded-md p-2 min-h-[100px] resize-none"
+          />
+        </div>
         {/* Image Upload */}
         <div className="space-y-2 mb-4">
           <h3 className="font-semibold">Image</h3>

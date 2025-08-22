@@ -17,9 +17,9 @@ import {
 } from "@/components/ui/kibo-ui/stories";
 
 interface Post {
-  id: number;
-  image?: string;
-  caption: string;
+  story_id: number;
+  photo_url: string;
+  description: string;
   author: string;
   created_at: string;
   // timeAgo: string;
@@ -39,7 +39,6 @@ interface PostCardProps {
 }
 
 export function PostCard({ post }: PostCardProps) {
-  // Avatar fallback initials
   const initials = post.author
     .split(" ")
     .map((n) => n[0])
@@ -59,10 +58,10 @@ export function PostCard({ post }: PostCardProps) {
       <Stories>
         <StoriesContent>
           <Story
-            key={post.id}
+            key={post.story_id}
             style={{ width: 340, aspectRatio: "3/4", position: "relative" }}
           >
-            <StoryImage src={post.image} alt="post image" />
+            <StoryImage src={post.photo_url} alt="post image" />
             <StoryOverlay />
           </Story>
         </StoriesContent>
@@ -81,7 +80,7 @@ export function PostCard({ post }: PostCardProps) {
           </Box>
         </Box>
 
-        <Typography variant="body2">{post.caption}</Typography>
+        <Typography variant="body2">{post.description}</Typography>
 
         <Box display="flex" alignItems="center" gap={1}>
           <IconButton color="default">
