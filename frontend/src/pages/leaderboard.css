@@ -1,9 +1,146 @@
-.main-box {
-  min-height: 100vh;
+.page {
+  flex: 1;
   width: 100vw;
   background: white;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 32px 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.card {
+  padding: 40px;
+  border-radius: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  background: white;
+}
+
+.section-title {
+  font-weight: 700;
+  color: #00796b;
+  margin-bottom: 24px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.controls label {
+  font-weight: 600;
+  color: #424242;
+}
+
+.country-select {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  font-size: 14px;
+  color: #424242;
+}
+
+.country-select:focus {
+  outline: none;
+  border-color: #0288d1;
+  box-shadow: 0 0 0 2px rgba(2, 136, 209, 0.2);
+}
+
+.status {
+  padding: 24px;
+  text-align: center;
+  border-radius: 12px;
+  margin: 16px 0;
+  font-weight: 500;
+}
+
+.status.loading {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.status.error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status.empty {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin: 16px 0;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.leaderboard-table th {
+  background: #f8f9fa;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #424242;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+}
+
+.leaderboard-table th:first-child {
+  text-align: center;
+  width: 60px;
+}
+
+.leaderboard-table th:nth-child(3),
+.leaderboard-table th:nth-child(4),
+.leaderboard-table th:nth-child(5) {
+  text-align: right;
+}
+
+.leaderboard-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+  color: #424242;
+}
+
+.leaderboard-table td:first-child {
+  text-align: center;
+  font-weight: 600;
+  color: #0288d1;
+}
+
+.leaderboard-table td:nth-child(3),
+.leaderboard-table td:nth-child(4),
+.leaderboard-table td:nth-child(5) {
+  text-align: right;
+  font-weight: 500;
+}
+
+.leaderboard-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+
+.updated-at {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
 }
