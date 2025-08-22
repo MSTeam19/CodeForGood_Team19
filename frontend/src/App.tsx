@@ -1,8 +1,8 @@
-import { Routes, Route } from 'react-router-dom';
-import Home from './pages/home';
-import Footer from './components/footer';
-import Header from './components/header';
-import Leaderboard from './pages/leaderboard';
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/home";
+import Footer from "./components/footer";
+import Header from "./components/header";
+import Leaderboard from "./pages/leaderboard";
 
 function App() {
   return (
