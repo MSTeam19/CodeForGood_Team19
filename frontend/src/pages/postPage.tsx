@@ -5,9 +5,17 @@ import { PostCard } from "../components/stories/postCard";
 import { CreatePostModal } from "../components/stories/createPostModal";
 import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { useAuth } from "../contexts/authContext";
+
+import "./postPage.css";
 
 export default function PostPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
+
+  const handleCreatePost = () => {
+    setIsCreateModalOpen(true);
+  };
 
   const mockPosts = [
     {
@@ -39,17 +47,19 @@ export default function PostPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div
-        style={{ display: "flex", justifyContent: "flex-end", padding: "16px" }}
-      >
-        <Button
-          onClick={() => setIsCreateModalOpen(true)}
-          className="bg-primary hover:bg-primary/90 font-medium"
+      {isAuthenticated && (
+        <div
+          style={{ display: "flex", justifyContent: "flex-end", padding: "16px" }}
         >
-          <AddIcon className="w-4 h-4 mr-2" />
-          Create post
-        </Button>
-      </div>
+          <Button
+            onClick={handleCreatePost}
+            className="btn-primary"
+          >
+            <AddIcon className="w-4 h-4 mr-2" />
+            Create post
+          </Button>
+        </div>
+      )}
 
       {/* Posts Grid */}
       <main className="max-w-6xl mx-auto px-4 py-8">
@@ -60,6 +70,7 @@ export default function PostPage() {
         </div>
       </main>
 
+      {/* Modals */}
       <CreatePostModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
