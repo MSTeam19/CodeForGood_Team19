@@ -94,7 +94,7 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       - name: Build (prebuilt artifacts)
-        run: vercel build --cwd . --token=$VERCEL_TOKEN
+        run: vercel build --cwd . --prod --token=$VERCEL_TOKEN
 
       - name: Deploy to Production
         id: deploy
