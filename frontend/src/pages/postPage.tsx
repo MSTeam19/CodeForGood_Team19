@@ -21,7 +21,7 @@ export default function PostPage() {
     {
       id: 2,
       image:
-        "https://reach.org.hk/_assets/media/249dbbdf026cabf4f1b434f666385116.jpg",
+        "https://reach.org.hk/_assets/media/c9c1ff98bfe0c137b8b8c540ac91fe8f.png",
       caption: "Lovely kids!",
       author: "Jie Qing",
       created_at: "2023-03-01T12:00:00Z",
@@ -29,7 +29,7 @@ export default function PostPage() {
     {
       id: 3,
       image:
-        "https://reach.org.hk/_assets/media/249dbbdf026cabf4f1b434f666385116.jpg",
+        "https://reach.org.hk/_assets/media/9a4b909f031246b73aa9e895be61ad13.jpg",
       caption: "The kids are learning so well!",
       author: "Jun Jie",
       created_at: "2023-03-01T12:00:00Z",
