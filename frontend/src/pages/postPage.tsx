@@ -54,9 +54,11 @@ export default function PostPage() {
       {/* Posts Grid */}
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockPosts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
+          {mockPosts.length > 0 ? (
+            mockPosts.map((post) => <PostCard key={post.id} post={post} />)
+          ) : (
+            <div>No posts available</div>
+          )}
         </div>
       </main>
 
