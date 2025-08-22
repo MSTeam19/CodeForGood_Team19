@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { PostCard } from "../components/stories/postCard";
 import { CreatePostModal } from "../components/stories/createPostModal";
 import { Button } from "@mui/material";
@@ -37,7 +37,7 @@ export default function PostPage() {
       created_at: "2023-03-01T12:00:00Z",
     },
     {
-      id: 2,
+      story_id: 2,
       photo_url:
         "https://reach.org.hk/_assets/media/c9c1ff98bfe0c137b8b8c540ac91fe8f.png",
       description: "Lovely kids!",
@@ -73,7 +73,9 @@ export default function PostPage() {
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {mockPosts.length > 0 ? (
-            mockPosts.map((post) => <PostCard key={post.id} post={post} />)
+            mockPosts.map((post) => (
+              <PostCard key={post.story_id} post={post} />
+            ))
           ) : (
             <div>No posts available</div>
           )}
