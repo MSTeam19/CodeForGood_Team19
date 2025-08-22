@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { PostCard } from "./components/stories/postCard";
-import { CreatePostModal } from "./components/stories/createPostModal";
+import { PostCard } from "../components/stories/postCard";
+import { CreatePostModal } from "../components/stories/createPostModal";
 import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -39,22 +39,17 @@ export default function PostPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-serif font-black text-foreground">
-              Posts
-            </h1>
-            <Button
-              onClick={() => setIsCreateModalOpen(true)}
-              className="bg-primary hover:bg-primary/90 font-medium"
-            >
-              <AddIcon className="w-4 h-4 mr-2" />
-              Create post
-            </Button>
-          </div>
-        </div>
-      </header>
+      <div
+        style={{ display: "flex", justifyContent: "flex-end", padding: "16px" }}
+      >
+        <Button
+          onClick={() => setIsCreateModalOpen(true)}
+          className="bg-primary hover:bg-primary/90 font-medium"
+        >
+          <AddIcon className="w-4 h-4 mr-2" />
+          Create post
+        </Button>
+      </div>
 
       {/* Posts Grid */}
       <main className="max-w-6xl mx-auto px-4 py-8">
