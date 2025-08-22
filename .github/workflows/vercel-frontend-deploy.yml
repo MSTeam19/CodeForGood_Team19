@@ -5,12 +5,12 @@ on:
     branches: [ main ]
     paths:
       - 'frontend/**'
-      - '.github/workflows/vercel-frontend.yml'
+      - '.github/workflows/vercel-frontend-deploy.yml'
   pull_request:
     branches: [ main ]
     paths:
       - 'frontend/**'
-      - '.github/workflows/vercel-frontend.yml'
+      - '.github/workflows/vercel-frontend-deploy.yml'
 
 permissions:
   contents: read
