@@ -7,7 +7,7 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Select,
+  Select
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { CreatePostModal } from "../components/stories/createPostModal";
