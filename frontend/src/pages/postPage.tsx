@@ -26,10 +26,10 @@ export default function PostPage() {
   };
 
   const [sortBy, setSortBy] = useState("newest");
-  const [posts, setPosts] = useState<unknown[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
   // const [loading, setLoading] = useState(true);
 
-  const handlePostCreated = (newPost: unknown) => {
+  const handlePostCreated = (newPost: any) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
   };
 
