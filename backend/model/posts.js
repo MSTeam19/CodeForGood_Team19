@@ -12,4 +12,15 @@ module.exports = {
 
     return data;
   },
+
+  async createPost({ author, description, photo_url }) {
+    const { data, error } = await supabase
+      .from(postTable)
+      .insert([{ author, description, photo_url }]);
+    if (error) {
+      console.error("Error creating post:", error);
+      throw error;
+    }
+    return data;
+  },
 };

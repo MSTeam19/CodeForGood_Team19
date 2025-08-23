@@ -20,4 +20,15 @@ router.get("/all", async (req, res) => {
   }
 });
 
+router.post("/create", async (req, res) => {
+  try {
+    const { author, description, photo_url } = req.body;
+    const newPost = await posts.createPost({ author, description, photo_url });
+    res.status(201).json(newPost);
+  } catch (error) {
+    console.error("error creating post:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
