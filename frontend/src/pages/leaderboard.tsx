@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { getQuestLevel, getQuestProgress } from '../utils/gamification';
 import './leaderboard.css';
 
@@ -292,22 +292,22 @@ export default function LeaderboardPage() {
                         </td>
                         <td>
                           {region.championCount! > 0 ? (
-                            <a href={`/region/${region.regionId}/champions`} className="champions-cell-link">
+                            <Link to={`/region/${region.regionId}/champions`} className="champions-cell-link">
                               <div className="champions-cell">
                                 <span className="champion-badge">👑{region.championCount}</span>
                                 {region.leadChampionName && (
                                   <span className="lead-champion-name">{region.leadChampionName}</span>
                                 )}
                               </div>
-                            </a>
+                            </Link>
                           ) : (
                             <span className="no-champions">No Champions</span>
                           )}
                         </td>
                         <td>
-                          <a href="/champion" className="champion-btn">
+                          <Link to="/champion" className="champion-btn">
                             Become a Champion
-                          </a>
+                          </Link>
                         </td>
                       </tr>
                     );
