@@ -25,7 +25,6 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -77,7 +76,6 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
     try {
       // Upload image to Google Cloud Storage
       const imageUrl = await uploadImageToBackend(selectedFile);
-      setUploadedImageUrl(imageUrl);
 
       console.log("Creating post:", { 
         name,
@@ -97,7 +95,6 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
       setName("");
       setSelectedImage(null);
       setSelectedFile(null);
-      setUploadedImageUrl(null);
       onClose();
 
     } catch (error) {
@@ -114,7 +111,6 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
     setName("");
     setSelectedImage(null);
     setSelectedFile(null);
-    setUploadedImageUrl(null);
     onClose();
   };
 
