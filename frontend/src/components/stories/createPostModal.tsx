@@ -18,35 +18,65 @@ import Avatar from "@mui/material/Avatar";
 interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onPostCreated?: (newPost: any) => void;
 }
 
-export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
-  const [caption, setCaption] = useState("");
-  const [name, setName] = useState("");
+export function CreatePostModal({
+  isOpen,
+  onClose,
+  onPostCreated,
+}: CreatePostModalProps) {
+  const [description, setDescription] = useState("");
+  const [author, setAuthor] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setSelectedImage(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+    // const file = event.target.files?.[0];
+    // if (file) {
+    //   const reader = new FileReader();
+    //   reader.onload = (e) => {
+    //     setSelectedImage(e.target?.result as string);
+    //   };
+    //   reader.readAsDataURL(file);
+    // }
+    setSelectedImage(
+      "https://reach.org.hk/_assets/media/249dbbdf026cabf4f1b434f666385116.jpg"
+    ); // to be changed
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/posts/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          author,
+          description,
+          photo_url: selectedImage, // to be changed
+          created_at: new Date().toISOString(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create post");
+      }
+
+      const data = await response.json();
+      console.log("Post created:", data);
+      onPostCreated?.(data[0]);
+      setAuthor("");
+      setDescription("");
+      setSelectedImage(null);
+      onClose();
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Creating post:", { caption, image: selectedImage });
-
-    // reset and close
-    setCaption("");
-    setSelectedImage(null);
-    onClose();
-  };
-
   const handleClose = () => {
-    setCaption("");
+    setDescription("");
     setSelectedImage(null);
     onClose();
   };
@@ -57,12 +87,12 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
 
       <DialogContent>
         <div className="space-y-2">
-          <h3 className="font-semibold">Name</h3>
+          <h3 className="font-semibold">Author</h3>
           <TextField
-            id="name"
+            id="author"
             placeholder="Fill in your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
             className="w-full border rounded-md p-2 min-h-[100px] resize-none"
           />
         </div>
@@ -107,12 +137,12 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
 
         {/* Caption */}
         <div className="space-y-2">
-          <h3 className="font-semibold">Caption</h3>
+          <h3 className="font-semibold">Description</h3>
           <TextareaAutosize
-            id="caption"
-            placeholder="Write a caption..."
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
+            id="description"
+            placeholder="Write a description..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className="w-full border rounded-md p-2 min-h-[100px] resize-none"
           />
         </div>
@@ -122,7 +152,7 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
         <Button onClick={handleClose}>Cancel</Button>
         <Button
           onClick={handleSubmit}
-          disabled={!selectedImage || !caption.trim()}
+          disabled={!selectedImage || !description.trim()}
           variant="contained"
           color="primary"
         >

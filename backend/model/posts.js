@@ -4,13 +4,11 @@ const postTable = "post";
 module.exports = {
   async getAllPosts() {
     const { data, error } = await supabase.from(postTable).select("*");
-
     if (error) {
       console.error("Error fetching posts:", error);
-      throw error;
+      return [];
     }
-
-    return data;
+    return data || [];
   },
 
   async createPost({ author, description, photo_url, created_at }) {
