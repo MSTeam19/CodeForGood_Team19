@@ -31,7 +31,7 @@ router.get("/all", async (req, res) => {
 
 router.post("/register", async (req, res) => {
     try {
-        const { email, name, password } = req.body;
+        const { email, name, password, roles } = req.body;
 
         // Check if email already exists
         const existingUser = await user.getUserByEmail(email);
@@ -41,7 +41,7 @@ router.post("/register", async (req, res) => {
 
         const hashedPassword = await hashPassword(password);
 
-        const newUser = await user.createUser(email, name, hashedPassword);
+        const newUser = await user.createUser(email, name, hashedPassword, roles);
 
         const { payload, token } = signUserToken(newUser);
         res.status(201).json({ user: payload, token });

@@ -17,6 +17,7 @@ export function AuthModal({ isOpen, onClose, initialMode }: AuthModalProps) {
     email: '',
     password: '',
     confirmPassword: '',
+    roles: '',
   });
   const [validationError, setValidationError] = useState('');
   
@@ -30,6 +31,7 @@ export function AuthModal({ isOpen, onClose, initialMode }: AuthModalProps) {
       email: '',
       password: '',
       confirmPassword: '',
+      roles: '',
     });
     setValidationError('');
     clearError();
@@ -45,7 +47,7 @@ export function AuthModal({ isOpen, onClose, initialMode }: AuthModalProps) {
     resetForm();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -69,7 +71,7 @@ export function AuthModal({ isOpen, onClose, initialMode }: AuthModalProps) {
         return;
       }
       
-      success = await register(formData.email, formData.password, formData.name);
+      success = await register(formData.email, formData.password, formData.name, formData.roles);
     } else {
       success = await login(formData.email, formData.password);
     }
@@ -109,19 +111,37 @@ export function AuthModal({ isOpen, onClose, initialMode }: AuthModalProps) {
 
             <form onSubmit={handleSubmit} className="auth-form">
               {!isLogin && (
-                <div className="form-group">
-                  <label htmlFor="name">Full Name</label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    disabled={isLoading}
-                    placeholder="Enter your full name"
-                  />
-                </div>
+                <>
+                  <div className="form-group">
+                    <label htmlFor="name">Full Name</label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      disabled={isLoading}
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="roles">Role</label>
+                    <select
+                      id="roles"
+                      name="roles"
+                      value={formData.roles}
+                      onChange={handleChange}
+                      required
+                      disabled={isLoading}
+                    >
+                      <option value="" disabled>Select your role</option>
+                      <option value="Staff">Staff</option>
+                      <option value="Parent">Parent</option>
+                      <option value="Student">Student</option>
+                    </select>
+                  </div>
+                </>
               )}
 
               <div className="form-group">

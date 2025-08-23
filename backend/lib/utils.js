@@ -17,7 +17,7 @@ function signUserToken(user) {
   const payload = {
     email: user.email,
     name: user.name,
-    role: user.role,
+    roles: user.roles,
   };
   return { payload: payload, token: jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN }) };
 }

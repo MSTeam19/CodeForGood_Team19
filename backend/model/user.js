@@ -21,10 +21,12 @@ module.exports = {
         return data;
     },
 
-    async createUser(email, name, password) {
+    async createUser(email, name, password, roles) {
+        const rolesArray = Array.isArray(roles) ? roles : [roles];
+
         const { data, error } = await supabase
             .from(userTable)
-            .insert([{ email, name, password }])
+            .insert([{ email, name, password, roles: rolesArray }])
             .select('*')
             .single();
 

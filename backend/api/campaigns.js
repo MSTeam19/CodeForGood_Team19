@@ -1,5 +1,6 @@
 const express = require('express');
 const { supabase } = require('../db/supabase');
+const campaignsModel = require('../model/campaigns');
 const router = express.Router();
 
 // POST /campaigns - Create new campaign
@@ -238,6 +239,20 @@ router.get('/:id/leaderboard', async (req, res) => {
 
   } catch (error) {
     console.error('Leaderboard endpoint error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: error.message
+    });
+  }
+});
+
+// get all campaigns
+router.get('', async (req, res) => {
+  try {
+    const data = await campaignsModel.getAllCampaigns();
+    res.json(data);
+  } catch (error) {
+    console.error('Campaigns endpoint error:', error);
     res.status(500).json({
       error: 'Internal server error',
       message: error.message
