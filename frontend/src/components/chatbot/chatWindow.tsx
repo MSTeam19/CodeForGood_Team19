@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, type FormEvent } from 'react';
 import './ChatWindow.css';
+import { mockKnowledgeBase, mockProjects } from './tempMockTest';
 
 interface Message {
   id: number;
@@ -7,124 +8,101 @@ interface Message {
   sender: 'user' | 'bot';
 }
 
-interface KnowledgeDoc {
-  content: string;
-  embedding: number[];
-}
+// using mock data for now
 
 const ChatWindow = ({ onClose }: { onClose: () => void }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
-  const [status, setStatus] = useState('Initializing AI...');
+  const [status, setStatus] = useState('Ready to help!');
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [isAtMainMenu, setIsAtMainMenu] = useState(true);
 
-  // refs for ai models and knowledge base
-  const extractorRef = useRef<any>(null);
-  const generatorRef = useRef<any>(null);
-  const knowledgeBaseRef = useRef<KnowledgeDoc[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // initialise AI and fetch knowledge base once on mount
   useEffect(() => {
-    const initialiseAI = async () => {
-      try {
-        const { pipeline } = await import('@xenova/transformers');
+    setMessages([
+      { id: Date.now(), text: "Hi, I'm REACH's virtual assistant! How can I help you today?", sender: 'bot' }
+    ]);
+  }, []);    
 
-        setStatus('Loading AI models...');
-        extractorRef.current = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
-        generatorRef.current = await pipeline('text2text-generation', 'Xenova/LaMini-Flan-T5-783M');
-
-        setStatus('Fetching knowledge...');
-        const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-knowledge-base`);
-        if (!response.ok) throw new Error("Failed to fetch knowledge base");
-        const { documents } = await response.json();
-        knowledgeBaseRef.current = documents;
-
-        // initial welcome message after everything is loaded
-        setMessages([
-          { id: Date.now(), text: "Hi, I'm REACH's virtual assistant! How can I help you today?", sender: 'bot' }
-        ]);
-        setStatus('Ready to help!');
-
-      } catch (error) {
-        console.error("AI Initialisation failed:", error);
-        setStatus('Error: Could not load AI.');
-        setMessages([{ id: Date.now(), text: "Sorry, I'm having trouble starting up. Please try again later.", sender: 'bot' }]);
-      }
-    };
-    initialiseAI();
-  }, []);
-
-  // auto scroll to the latest message
+  // scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, status]);
 
+  // call the backend API for RAG
+  const generateRAGResponse = async (query: string): Promise<string> => {
+    try {
+      // simplified API approach: combine knowledge base into a single context string to send to the backend
+      // chg to fetch from supabase
+      const context = mockKnowledgeBase
+        .map(doc => doc.content)
+        .join('\n\n---\n\n');
 
-  // handler for predefined topic buttons
-  const handleButtonClick = async (topic: string, displayText: string) => {
-    setMessages(prev => [...prev, { id: Date.now(), text: displayText, sender: 'user' }]);
-    setStatus('Thinking...');
-    setIsAtMainMenu(false);
+      const response = await fetch('/api/bot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query, context }),
+      });
 
-    let botResponse = "I'm sorry, I don't have information on that topic right now.";
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `API error: ${response.statusText}`);
+      }
 
-    // handle structured queries
-    // hardcoded for now to test
-    if (topic === 'active_campaigns') {
-        // info on current campaigns
-      botResponse = "Our current campaigns include...";
-    } else if (topic === 'how_to_donate') {
-        // provide donation link or info
-      botResponse = "You can donate via...";
-    } else if (topic === 'contact_us') {
-        // maybe provide link to contact page
-      botResponse = "For general inquiries, you can email our team at ...";
+      const result = await response.json();
+      return result.answer || "Sorry, I couldn't get a valid response.";
+
+    } catch (error) {
+      console.error("Error calling generation API:", error);
+      return "Sorry, I encountered an error while processing your request.";
     }
-    
-    setTimeout(() => {
-        setMessages(prev => [...prev, { id: Date.now() + 1, text: botResponse, sender: 'bot' }]);
-        setStatus('Ready to help!');
-    }, 500);
   };
 
-  // handler for the free text input form (RAG pipeline)
+  const handleButtonClick = async (topic: string, displayText: string) => {
+    setIsAtMainMenu(false);
+    setMessages(prev => [...prev, { id: Date.now(), text: displayText, sender: 'user' }]);
+    setStatus('Thinking...');
+
+    let botResponse = "";
+
+    if (topic === 'active_campaigns') {
+      const activeProjects = mockProjects.filter(p => p.is_active);
+      if (activeProjects.length > 0) {
+        const projectNames = activeProjects.map(p => `'${p.name}'`).join(' and ');
+        botResponse = `We have ${activeProjects.length} active campaigns right now: ${projectNames}.`;
+      } else {
+        botResponse = "We don't have any active campaigns at the moment, but please check back soon!";
+      }
+      setTimeout(() => {
+          setMessages(prev => [...prev, { id: Date.now() + 1, text: botResponse, sender: 'bot' }]);
+          setStatus('Ready to help!');
+      }, 500);
+    } else {
+      const queryForRAG = displayText;
+      botResponse = await generateRAGResponse(queryForRAG);
+      setMessages(prev => [...prev, { id: Date.now() + 1, text: botResponse, sender: 'bot' }]);
+      setStatus('Ready to help!');
+    }
+  };
+
   const handleCustomQuery = async (e: FormEvent) => {
     e.preventDefault();
     if (!input.trim() || status !== 'Ready to help!') return;
 
+    setIsAtMainMenu(false);
     const userMessage: Message = { id: Date.now(), text: input, sender: 'user' };
     setMessages(prev => [...prev, userMessage]);
     const query = input;
     setInput('');
     setStatus('Thinking...');
-    setIsAtMainMenu(false);
-
-    try {
-      const { cos_sim } = await import('@xenova/transformers');
-      const queryEmbedding = await extractorRef.current(query, { pooling: 'mean', normalize: true });
-
-      const scores = knowledgeBaseRef.current.map(doc => ({
-          score: cos_sim(queryEmbedding.data, doc.embedding),
-          content: doc.content
-      }));
-      scores.sort((a, b) => b.score - a.score);
-      
-      const context = scores.slice(0, 3).map(item => item.content).join('\n\n---\n\n');
-      
-      const prompt = `Based only on the provided context, answer the user's question. If the context doesn't contain the answer, say "I'm sorry, I don't have that specific information."\n\nContext:\n${context}\n\nQuestion:\n${query}\n\nAnswer:`;
-
-      const result = await generatorRef.current(prompt, { max_new_tokens: 250, skip_special_tokens: true });
-      const botResponse = result[0].generated_text.trim();
-      
-      setMessages(prev => [...prev, { id: Date.now() + 1, text: botResponse, sender: 'bot' }]);
-    } catch (error) {
-      console.error("Error during RAG generation:", error);
-      setMessages(prev => [...prev, { id: Date.now() + 1, text: "Sorry, I encountered an error while processing your request.", sender: 'bot' }]);
-    } finally {
-      setStatus('Ready to help!');
-    }
+    
+    const botResponse = await generateRAGResponse(query);
+    
+    setMessages(prev => [...prev, { id: Date.now() + 1, text: botResponse, sender: 'bot' }]);
+    setStatus('Ready to help!');
   };
 
   const handleGoBack = () => {
@@ -156,7 +134,7 @@ const ChatWindow = ({ onClose }: { onClose: () => void }) => {
             <button onClick={() => handleButtonClick('contact_us', 'How do I contact you?')}>Contact Us</button>
             <button onClick={() => { 
               setShowCustomInput(true); 
-              setIsAtMainMenu(false); // <-- UPDATE
+              setIsAtMainMenu(false);
               setMessages(prev => [...prev, {id: Date.now(), text: "I have a specific question.", sender: 'user'}]);
             }}>Ask something else...</button>
           </div>
@@ -184,7 +162,7 @@ const ChatWindow = ({ onClose }: { onClose: () => void }) => {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={status === 'Ready to help!' ? 'Ask a question...' : status}
+            placeholder={status === 'Ready to help!' ? 'Ask a question...' : 'AI is thinking...'}
             disabled={status !== 'Ready to help!'}
             autoFocus
           />
