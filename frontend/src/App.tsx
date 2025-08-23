@@ -6,6 +6,8 @@ import Header from './components/header/header';
 import Leaderboard from './pages/leaderboard';
 import NeedsMap from './pages/needs-map';
 import PostPage from './pages/postPage';
+import Chatbot from './components/chatbot/chatbot';
+import './App.css';
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
+        <Chatbot />
       </div>
     </AuthProvider>
   );
