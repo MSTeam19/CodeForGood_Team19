@@ -274,6 +274,9 @@ function DetailPanel({
           >
             View in Leaderboard
           </a>
+          <a href="/champion" className="btn btn-champion">
+            Become a Champion
+          </a>
         </div>
       </div>
     </div>

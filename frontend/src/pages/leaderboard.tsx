@@ -226,6 +226,7 @@ export default function LeaderboardPage() {
                     <th>Total Raised (HKD)</th>
                     <th>Donations</th>
                     <th>Highest Donation (HKD)</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -237,6 +238,11 @@ export default function LeaderboardPage() {
                       <td>{region.donationCount}</td>
                       <td>
                         {hkd.format(region.highestSingleDonationCents / 100)}
+                      </td>
+                      <td>
+                        <a href="/champion" className="champion-btn">
+                          Become a Champion
+                        </a>
                       </td>
                     </tr>
                   ))}

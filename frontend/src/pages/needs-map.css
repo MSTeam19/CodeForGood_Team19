@@ -337,6 +337,23 @@
   box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
 }
 
+.btn-champion {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.btn-champion:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
 .map-placeholder {
   display: flex;
   align-items: center;
