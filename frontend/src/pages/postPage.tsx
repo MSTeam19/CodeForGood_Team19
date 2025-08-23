@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { PostCard } from "../components/stories/postCard";
-import { CreatePostModal } from "../components/stories/createPostModal";
+import AddIcon from "@mui/icons-material/Add";
 import {
-  Button,
   Box,
-  Select,
-  MenuItem,
+  Button,
   FormControl,
   InputLabel,
+  MenuItem,
+  Select,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { useEffect, useState } from "react";
+import { CreatePostModal } from "../components/stories/createPostModal";
+import { PostCard } from "../components/stories/postCard";
 import { useAuth } from "../contexts/authContext";
 
 import "./postPage.css";
@@ -26,54 +26,14 @@ export default function PostPage() {
   };
 
   const [sortBy, setSortBy] = useState("newest");
-  // const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<unknown[]>([]);
   // const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     try {
-  //       const res = await fetch("http://localhost:3001/posts/"); // backend route
-  //       const data = await res.json();
-  //       // setPosts(data); // expects array of { id, image, caption, author, created_at }
-  //     } catch (err) {
-  //       console.error("Error fetching posts:", err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  const handlePostCreated = (newPost: unknown) => {
+    setPosts((prevPosts) => [newPost, ...prevPosts]);
+  };
 
-  //   fetchPosts();
-  // }, []);
-
-
-  const mockPosts = [
-    {
-      story_id: 1,
-      photo_url:
-        "https://reach.org.hk/_assets/media/249dbbdf026cabf4f1b434f666385116.jpg",
-      description: "Day in the life of the kids!",
-      author: "Hui Xin",
-      created_at: "2024-03-01T12:00:00Z",
-    },
-    {
-      story_id: 2,
-      photo_url:
-        "https://reach.org.hk/_assets/media/c9c1ff98bfe0c137b8b8c540ac91fe8f.png",
-      description: "Lovely kids!",
-      author: "Jie Qing",
-      created_at: "2025-03-01T12:00:00Z",
-    },
-    {
-      story_id: 3,
-      photo_url:
-        "https://reach.org.hk/_assets/media/9a4b909f031246b73aa9e895be61ad13.jpg",
-      description: "The kids are learning so well!",
-      author: "Jun Jie",
-      created_at: "2023-03-01T12:00:00Z",
-    },
-  ];
-
-  const sortedPosts = [...mockPosts].sort((a, b) => {
+  const sortedPosts = [...posts].sort((a, b) => {
     if (sortBy === "newest") {
       return (
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
@@ -88,18 +48,33 @@ export default function PostPage() {
     return 0;
   });
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/posts/all");
+        const data = await res.json();
+        setPosts(data);
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
 
       {isAuthenticated && (
         <div
-          style={{ display: "flex", justifyContent: "flex-end", padding: "16px" }}
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            padding: "16px",
+          }}
         >
-          <Button
-            onClick={handleCreatePost}
-            className="btn-primary"
-          >
+          <Button onClick={handleCreatePost} className="btn-primary">
             <AddIcon className="w-4 h-4 mr-2" />
             Create post
           </Button>
@@ -133,25 +108,23 @@ export default function PostPage() {
             margin: 0,
           }}
         >
-          Donation Leaderboard Vercel Test
+          Personal Stories
         </h1>
         <Button
           onClick={() => setIsCreateModalOpen(true)}
-          variant="contained"
+          // variant="contained"
+          style={{ color: "#00796b" }}
           startIcon={<AddIcon />}
         >
           Create Post
         </Button>
       </Box>
 
-
       {/* Posts Grid */}
       <main className="max-w-6xl mx-auto px-4 py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedPosts.length > 0 ? (
-            sortedPosts.map((post) => (
-              <PostCard key={post.story_id} post={post} />
-            ))
+            sortedPosts.map((post) => <PostCard key={post.id} post={post} />)
           ) : (
             <div>No posts available</div>
           )}
@@ -162,6 +135,7 @@ export default function PostPage() {
       <CreatePostModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
+        onPostCreated={handlePostCreated} // new prop
       />
     </div>
   );

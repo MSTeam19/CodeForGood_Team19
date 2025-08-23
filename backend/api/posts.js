@@ -16,6 +16,23 @@ router.get("/all", async (req, res) => {
 
     res.status(200).json(allPosts);
   } catch (error) {
+    console.error("error fetching posts:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post("/create", async (req, res) => {
+  try {
+    const { author, description, photo_url, created_at } = req.body;
+    const newPost = await posts.createPost({
+      author,
+      description,
+      photo_url,
+      created_at,
+    });
+    res.status(201).json(newPost);
+  } catch (error) {
+    console.error("error creating post:", error);
     res.status(500).json({ error: error.message });
   }
 });

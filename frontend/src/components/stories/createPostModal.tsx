@@ -17,11 +17,16 @@ import React, { useState } from "react";
 interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onPostCreated?: (newPost: any) => void;
 }
 
-export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
-  const [caption, setCaption] = useState("");
-  const [name, setName] = useState("");
+export function CreatePostModal({
+  isOpen,
+  onClose,
+  onPostCreated,
+}: CreatePostModalProps) {
+  const [description, setDescription] = useState("");
+  const [author, setAuthor] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -67,48 +72,57 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
   };
 
   const handleSubmit = async () => {
-    if (!selectedFile || !caption.trim() || !name.trim()) {
+    if (!selectedFile || !description.trim() || !author.trim()) {
       return;
     }
 
     setUploading(true);
-
+    
     try {
-      // Upload image to Google Cloud Storage
       const imageUrl = await uploadImageToBackend(selectedFile);
 
-      console.log("Creating post:", { 
-        name,
-        caption, 
-        imageUrl 
+      console.log("Creating post:", {
+        author,
+        description,
+        imageUrl
       });
-      
 
-      // Show success notification
+      setSelectedImage(imageUrl);
+
+      const response = await fetch("http://localhost:3000/posts/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          author,
+          description,
+          photo_url: selectedImage, // to be changed
+          created_at: new Date().toISOString(),
+        }),
+      });
+
       alert('🎉 Image uploaded successfully! Your post has been created.');
 
-      // Here you can make another API call to save the post data to your database
-      // await savePost({ name, caption, imageUrl });
+      if (!response.ok) {
+        throw new Error("Failed to create post");
+      }
 
-      // Reset and close
-      setCaption("");
-      setName("");
+      const data = await response.json();
+      console.log("Post created:", data);
+      onPostCreated?.(data[0]);
+      setAuthor("");
+      setDescription("");
       setSelectedImage(null);
-      setSelectedFile(null);
       onClose();
-
-    } catch (error) {
-      console.error('Error creating post:', error);
-      // You might want to show an error message to the user here
-      alert('❌ Failed to upload image. Please try again.');
-    } finally {
-      setUploading(false);
+    } catch (err) {
+      console.error(err);
     }
   };
 
   const handleClose = () => {
-    setCaption("");
-    setName("");
+    setDescription("");
+    setAuthor("");
     setSelectedImage(null);
     setSelectedFile(null);
     onClose();
@@ -119,15 +133,14 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
       <DialogTitle>Create New Post</DialogTitle>
 
       <DialogContent>
-        <div className="space-y-2 mb-4">
-          <h3 className="font-semibold">Name</h3>
+        <div className="space-y-2">
+          <h3 className="font-semibold">Author</h3>
           <TextField
-            id="name"
+            id="author"
             placeholder="Fill in your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full border rounded-md p-2"
-            fullWidth
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            className="w-full border rounded-md p-2 min-h-[100px] resize-none"
           />
         </div>
 
@@ -175,12 +188,12 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
 
         {/* Caption */}
         <div className="space-y-2">
-          <h3 className="font-semibold">Caption</h3>
+          <h3 className="font-semibold">Description</h3>
           <TextareaAutosize
-            id="caption"
-            placeholder="Write a caption..."
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
+            id="description"
+            placeholder="Write a description..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className="w-full border rounded-md p-2 min-h-[100px] resize-none"
           />
         </div>
@@ -192,7 +205,7 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
         </Button>
         <Button
           onClick={handleSubmit}
-          disabled={!selectedFile || !caption.trim() || !name.trim() || uploading}
+          disabled={!selectedImage || !description.trim()}
           variant="contained"
           color="primary"
         >
