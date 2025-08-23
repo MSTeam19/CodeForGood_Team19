@@ -278,4 +278,18 @@ router.get('/', async (req, res) => {
   }
 });
 
+// get all regions
+router.get('', async (req, res) => {
+  try {
+    const data = await regionsModel.getAllRegions();
+    res.json(data);
+  } catch (error) {
+    console.error('Regions endpoint error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: error.message
+    });
+  }
+});
+
 module.exports = router;

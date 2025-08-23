@@ -11,5 +11,22 @@ module.exports = {
         return data;
     },
 
+    async getAllDonationsWithMapping() {
+        const { data, error } = await supabase
+            .from(donationsTable)
+            .select(`
+                *,
+                regions (
+                    name
+                ),
+                campaigns (
+                    name
+                )
+            `);
+
+        if (error) throw new Error(error.message);
+
+        return data;
+    }
 }
 

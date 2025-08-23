@@ -1,5 +1,6 @@
 const express = require('express');
 const { supabase } = require('../db/supabase');
+const donationsModel = require('../model/donations');
 const router = express.Router();
 
 // POST /donations - Create new donation
@@ -37,7 +38,7 @@ router.post('/', async (req, res) => {
         donor_name: donorName,
         donor_email: donorEmail,
         amount_cents: amountCents,
-        message: message,
+        donor_message: message,
         campaign_id: campaignId || 'demo-campaign',
         created_at: new Date().toISOString()
       }])
@@ -209,6 +210,26 @@ router.delete('/:id', async (req, res) => {
 
   } catch (error) {
     console.error('Donation deletion endpoint error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: error.message
+    });
+  }
+});
+
+router.get('/', async (req, res) => {
+  try {
+    const data = await donationsModel.getAllDonationsWithMapping();
+
+    if (!data) {
+      return res.status(404).json({
+        error: 'No donations found'
+      });
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error('Donation retrieval endpoint error:', error);
     res.status(500).json({
       error: 'Internal server error',
       message: error.message

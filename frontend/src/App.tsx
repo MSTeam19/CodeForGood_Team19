@@ -6,6 +6,8 @@ import Header from './components/header/header';
 import Leaderboard from './pages/leaderboard';
 import NeedsMap from './pages/needs-map';
 import PostPage from './pages/postPage';
+import AdminPage from './pages/adminPage';
+import { ProtectedRoute } from './components/protectedRoute';
 
 function App() {
   return (
@@ -18,6 +20,14 @@ function App() {
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/needs-map" element={<NeedsMap />} />
             <Route path="/stories" element={<PostPage />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute requiredRole="Staff">
+                  <AdminPage />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </main>
         <Footer />

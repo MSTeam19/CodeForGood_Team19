@@ -6,7 +6,7 @@ interface User {
   id: string;
   email: string;
   name: string;
-  role?: string;
+  roles?: string[];
 }
 
 interface AuthState {
@@ -19,7 +19,7 @@ interface AuthState {
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
-  register: (email: string, password: string, name: string) => Promise<boolean>;
+  register: (email: string, password: string, name: string, roles: string) => Promise<boolean>;
   clearError: () => void;
 }
 
@@ -32,7 +32,7 @@ type AuthAction =
 
 const initialState: AuthState = {
   user: null,
-  isLoading: false,
+  isLoading: true,
   isAuthenticated: false,
   error: null,
 };
@@ -93,9 +93,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
       } catch {
         localStorage.removeItem('authToken');
         localStorage.removeItem('userData');
+        dispatch({ type: 'AUTH_LOGOUT' });
       }
+    } else {
+      dispatch({ type: 'AUTH_LOGOUT' });
     }
   }, []);
+
+  useEffect(() => {
+    console.log('User state changed:', state);
+  }, [state]);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     dispatch({ type: 'AUTH_START' });
@@ -121,13 +128,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const register = async (email: string, password: string, name: string): Promise<boolean> => {
+  const register = async (email: string, password: string, name: string, roles: string): Promise<boolean> => {
     dispatch({ type: 'AUTH_START' });
     try {
       const response = await fetch(`${VITE_API_BASE_URL}/user/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({ email, password, name, roles }),
       });
       if (!response.ok) {
         const errorData = await response.json();
