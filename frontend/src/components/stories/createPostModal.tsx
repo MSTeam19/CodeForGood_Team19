@@ -43,13 +43,13 @@ export function CreatePostModal({
     }
   };
 
-    const uploadImageToBackend = async (file: File): Promise<string> => {
+  const uploadImageToBackend = async (file: File): Promise<string> => {
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append("image", file);
 
     try {
-      const response = await fetch('http://localhost:3000/upload', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/upload", {
+        method: "POST",
         body: formData,
       });
 
@@ -63,10 +63,10 @@ export function CreatePostModal({
       if (result.success) {
         return result.url;
       } else {
-        throw new Error(result.error || 'Upload failed');
+        throw new Error(result.error || "Upload failed");
       }
     } catch (error) {
-      console.error('Upload error:', error);
+      console.error("Upload error:", error);
       throw error;
     }
   };
@@ -77,14 +77,14 @@ export function CreatePostModal({
     }
 
     setUploading(true);
-    
+
     try {
       const imageUrl = await uploadImageToBackend(selectedFile);
 
       console.log("Creating post:", {
         author,
         description,
-        imageUrl
+        imageUrl,
       });
 
       setSelectedImage(imageUrl);
@@ -97,12 +97,12 @@ export function CreatePostModal({
         body: JSON.stringify({
           author,
           description,
-          photo_url: selectedImage, // to be changed
+          photo_url: imageUrl, // to be changed
           created_at: new Date().toISOString(),
         }),
       });
 
-      alert('🎉 Image uploaded successfully! Your post has been created.');
+      alert("🎉 Image uploaded successfully! Your post has been created.");
 
       if (!response.ok) {
         throw new Error("Failed to create post");
@@ -215,7 +215,7 @@ export function CreatePostModal({
               Uploading...
             </>
           ) : (
-            'Share Post'
+            "Share Post"
           )}
         </Button>
       </DialogActions>
