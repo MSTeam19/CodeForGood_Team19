@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { getQuestLevel, getQuestProgress } from '../utils/gamification';
 import './leaderboard.css';
 
 type LeaderboardRow = {
@@ -8,6 +9,9 @@ type LeaderboardRow = {
   totalAmountCents: number;
   donationCount: number;
   highestSingleDonationCents: number;
+  championCount?: number;
+  leadChampionName?: string;
+  leadChampionId?: string;
 };
 
 type LeaderboardResponse = {
@@ -26,6 +30,8 @@ const mockDataByCountry: Record<string, LeaderboardResponse> = {
         totalAmountCents: 2500000,
         donationCount: 45,
         highestSingleDonationCents: 100000,
+        championCount: 2,
+        leadChampionName: 'Sarah Chen',
       },
       {
         regionId: 'hk-wan-chai',
@@ -33,6 +39,8 @@ const mockDataByCountry: Record<string, LeaderboardResponse> = {
         totalAmountCents: 1800000,
         donationCount: 32,
         highestSingleDonationCents: 75000,
+        championCount: 1,
+        leadChampionName: 'Mike Wong',
       },
       {
         regionId: 'hk-tsim-sha-tsui',
@@ -40,6 +48,7 @@ const mockDataByCountry: Record<string, LeaderboardResponse> = {
         totalAmountCents: 1200000,
         donationCount: 28,
         highestSingleDonationCents: 50000,
+        championCount: 0,
       },
     ],
     updatedAt: new Date().toISOString(),
@@ -53,6 +62,8 @@ const mockDataByCountry: Record<string, LeaderboardResponse> = {
         totalAmountCents: 1900000,
         donationCount: 38,
         highestSingleDonationCents: 85000,
+        championCount: 3,
+        leadChampionName: 'Lisa Tan',
       },
       {
         regionId: 'sg-orchard',
@@ -60,6 +71,7 @@ const mockDataByCountry: Record<string, LeaderboardResponse> = {
         totalAmountCents: 1400000,
         donationCount: 29,
         highestSingleDonationCents: 60000,
+        championCount: 0,
       },
       {
         regionId: 'sg-sentosa',
@@ -67,6 +79,7 @@ const mockDataByCountry: Record<string, LeaderboardResponse> = {
         totalAmountCents: 900000,
         donationCount: 22,
         highestSingleDonationCents: 45000,
+        championCount: 0,
       },
     ],
     updatedAt: new Date().toISOString(),
@@ -80,6 +93,8 @@ const mockDataByCountry: Record<string, LeaderboardResponse> = {
         totalAmountCents: 1600000,
         donationCount: 35,
         highestSingleDonationCents: 70000,
+        championCount: 1,
+        leadChampionName: 'Ahmad Rahman',
       },
       {
         regionId: 'my-petaling-jaya',
@@ -87,6 +102,7 @@ const mockDataByCountry: Record<string, LeaderboardResponse> = {
         totalAmountCents: 1100000,
         donationCount: 26,
         highestSingleDonationCents: 55000,
+        championCount: 0,
       },
       {
         regionId: 'my-johor-bahru',
@@ -94,6 +110,7 @@ const mockDataByCountry: Record<string, LeaderboardResponse> = {
         totalAmountCents: 800000,
         donationCount: 20,
         highestSingleDonationCents: 40000,
+        championCount: 0,
       },
     ],
     updatedAt: new Date().toISOString(),
@@ -223,29 +240,78 @@ export default function LeaderboardPage() {
                   <tr>
                     <th>Rank</th>
                     <th>Region</th>
+                    <th>Quest Level</th>
                     <th>Total Raised (HKD)</th>
                     <th>Donations</th>
                     <th>Highest Donation (HKD)</th>
+                    <th>Champions</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedRegions.map((region, index) => (
-                    <tr key={region.regionId}>
-                      <td>{index + 1}</td>
-                      <td>{region.name}</td>
-                      <td>{hkd.format(region.totalAmountCents / 100)}</td>
-                      <td>{region.donationCount}</td>
-                      <td>
-                        {hkd.format(region.highestSingleDonationCents / 100)}
-                      </td>
-                      <td>
-                        <a href="/champion" className="champion-btn">
-                          Become a Champion
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
+                  {sortedRegions.map((region, index) => {
+                    const questLevel = getQuestLevel(region.totalAmountCents);
+                    const questProgress = getQuestProgress(region.totalAmountCents);
+                    
+                    return (
+                      <tr key={region.regionId}>
+                        <td>{index + 1}</td>
+                        <td>
+                          <div className="region-cell">
+                            <span className="region-name">{region.name}</span>
+                            {region.championCount! > 0 && (
+                              <span className="champion-indicator">👑</span>
+                            )}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="quest-level-cell">
+                            <div className="quest-level-badge" style={{ backgroundColor: questLevel.color }}>
+                              <span className="quest-emoji">{questLevel.emoji}</span>
+                              <span className="quest-name">{questLevel.name}</span>
+                            </div>
+                            {questProgress.next && (
+                              <div className="quest-progress-mini">
+                                <div className="quest-progress-bar-mini">
+                                  <div 
+                                    className="quest-progress-fill-mini"
+                                    style={{ width: `${questProgress.progress}%`, backgroundColor: questLevel.color }}
+                                  />
+                                </div>
+                                <span className="quest-progress-text-mini">
+                                  {questProgress.progress.toFixed(0)}% to {questProgress.next.emoji}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                        <td>{hkd.format(region.totalAmountCents / 100)}</td>
+                        <td>{region.donationCount}</td>
+                        <td>
+                          {hkd.format(region.highestSingleDonationCents / 100)}
+                        </td>
+                        <td>
+                          {region.championCount! > 0 ? (
+                            <a href={`/region/${region.regionId}/champions`} className="champions-cell-link">
+                              <div className="champions-cell">
+                                <span className="champion-badge">👑{region.championCount}</span>
+                                {region.leadChampionName && (
+                                  <span className="lead-champion-name">{region.leadChampionName}</span>
+                                )}
+                              </div>
+                            </a>
+                          ) : (
+                            <span className="no-champions">No Champions</span>
+                          )}
+                        </td>
+                        <td>
+                          <a href="/champion" className="champion-btn">
+                            Become a Champion
+                          </a>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { getQuestLevel, getQuestProgress, QUEST_LEVELS } from '../utils/gamification';
 import './needs-map.css';
 
 // Types matching the existing leaderboard
@@ -12,6 +13,9 @@ type LeaderboardRow = {
   lat?: number;
   lng?: number;
   goalCents?: number;
+  championCount?: number;
+  leadChampionName?: string;
+  leadChampionId?: string;
 };
 
 type LeaderboardResponse = {
@@ -173,6 +177,17 @@ function getProgressColor(current: number, goal?: number): string {
   return '#66bb6a';
 }
 
+function getDonationColor(totalAmountCents: number, maxAmount: number): string {
+  // Create a color scale from red (low) to green (high) based on donation amounts
+  const percentage = totalAmountCents / maxAmount;
+  
+  if (percentage >= 0.8) return '#22c55e'; // Bright green for highest
+  if (percentage >= 0.6) return '#84cc16'; // Yellow-green
+  if (percentage >= 0.4) return '#eab308'; // Yellow
+  if (percentage >= 0.2) return '#f97316'; // Orange
+  return '#ef4444'; // Red for lowest donations
+}
+
 function getMarkerSize(amount: number, maxAmount: number): number {
   const ratio = amount / maxAmount;
   return Math.max(20, Math.min(50, 20 + ratio * 30));
@@ -259,6 +274,69 @@ function DetailPanel({
           </div>
         </div>
 
+        <div className="detail-quest">
+          {(() => {
+            const questLevel = getQuestLevel(region.totalAmountCents);
+            const questProgress = getQuestProgress(region.totalAmountCents);
+            return (
+              <div className="quest-level-display">
+                <div className="quest-header">
+                  <span className="quest-emoji" style={{ fontSize: '1.5rem' }}>
+                    {questLevel.emoji}
+                  </span>
+                  <div className="quest-info">
+                    <span className="quest-name" style={{ color: questLevel.color, fontWeight: 'bold' }}>
+                      {questLevel.name} Level
+                    </span>
+                    <span className="quest-description">{questLevel.description}</span>
+                  </div>
+                </div>
+                {questProgress.next && (
+                  <div className="quest-progress">
+                    <div className="quest-progress-bar">
+                      <div 
+                        className="quest-progress-fill" 
+                        style={{ 
+                          width: `${questProgress.progress}%`, 
+                          backgroundColor: questLevel.color 
+                        }}
+                      />
+                    </div>
+                    <span className="quest-progress-text">
+                      {questProgress.progress.toFixed(1)}% to {questProgress.next.emoji} {questProgress.next.name}
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+        </div>
+
+        {(region.championCount! > 0 || region.leadChampionName) && (
+          <div className="detail-champions">
+            <div className="champions-header">
+              <span className="champions-title">
+                👑 Champions{' '}
+                {region.championCount! > 0 && `(${region.championCount})`}
+              </span>
+            </div>
+            {region.leadChampionName && (
+              <div className="lead-champion">
+                <span className="champion-label">Lead Champion:</span>
+                <span className="champion-name">{region.leadChampionName}</span>
+              </div>
+            )}
+            {region.championCount! > 1 && (
+              <div className="more-champions">
+                <span className="more-champions-text">
+                  +{region.championCount! - 1} more Champion
+                  {region.championCount! > 2 ? 's' : ''}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="detail-actions">
           <button
             className="btn btn-primary"
@@ -274,6 +352,14 @@ function DetailPanel({
           >
             View in Leaderboard
           </a>
+          {region.championCount! > 0 && (
+            <a
+              href={`/region/${region.regionId}/champions`}
+              className="btn btn-champions"
+            >
+              Meet Champions
+            </a>
+          )}
           <a href="/champion" className="btn btn-champion">
             Become a Champion
           </a>
@@ -403,29 +489,43 @@ export default function NeedsMap() {
           ...regionsWithCoords.map((r) => r.totalAmountCents)
         );
 
-        // Create GeoJSON data for the regions
+        // Create GeoJSON data for the regions with quest level data
         const geojsonData = {
           type: 'FeatureCollection',
-          features: regionsWithCoords.map((region) => ({
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [region.lng!, region.lat!],
-            },
-            properties: {
-              regionId: region.regionId,
-              name: region.name,
-              totalAmountCents: region.totalAmountCents,
-              donationCount: region.donationCount,
-              highestSingleDonationCents: region.highestSingleDonationCents,
-              goalCents: region.goalCents,
-              color: getProgressColor(
-                region.totalAmountCents,
-                region.goalCents
-              ),
-              size: getMarkerSize(region.totalAmountCents, maxAmount),
-            },
-          })),
+          features: regionsWithCoords.map((region) => {
+            const questLevel = getQuestLevel(region.totalAmountCents);
+            const questProgress = getQuestProgress(region.totalAmountCents);
+            const donationColor = getDonationColor(region.totalAmountCents, maxAmount);
+            
+            return {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [region.lng!, region.lat!],
+              },
+              properties: {
+                regionId: region.regionId,
+                name: region.name,
+                totalAmountCents: region.totalAmountCents,
+                donationCount: region.donationCount,
+                highestSingleDonationCents: region.highestSingleDonationCents,
+                goalCents: region.goalCents,
+                championCount: region.championCount || 0,
+                leadChampionName: region.leadChampionName,
+                // Quest level properties
+                questLevelId: questLevel.id,
+                questLevelName: questLevel.name,
+                questLevelEmoji: questLevel.emoji,
+                questLevelColor: questLevel.color,
+                questRingColor: questLevel.ringColor,
+                questProgress: questProgress.progress,
+                hasChampions: (region.championCount || 0) > 0,
+                // Use donation-based colors for actual display
+                color: donationColor,
+                size: getMarkerSize(region.totalAmountCents, maxAmount),
+              },
+            };
+          }),
         };
 
         // Add source
@@ -434,31 +534,68 @@ export default function NeedsMap() {
           data: geojsonData,
         });
 
-        // Add circle layer
+        // Add donation-based colored circles (simpler approach)
+        
+        // Pulsing outer ring for champions
         map.addLayer({
-          id: 'schools-circles',
+          id: 'champion-pulse',
           type: 'circle',
           source: 'schools',
+          filter: ['>', ['get', 'championCount'], 0],
+          paint: {
+            'circle-radius': ['+', ['get', 'size'], 15],
+            'circle-color': 'transparent',
+            'circle-stroke-color': '#FFD700',
+            'circle-stroke-width': 1,
+            'circle-opacity': 0.2,
+          },
+        });
+
+        // Main donation circles (non-champion regions)
+        map.addLayer({
+          id: 'donation-circles',
+          type: 'circle',
+          source: 'schools',
+          filter: ['==', ['get', 'championCount'], 0],
           paint: {
             'circle-radius': ['get', 'size'],
-            'circle-color': ['get', 'color'],
+            'circle-color': ['get', 'color'], // Use the donation-based color
             'circle-stroke-color': '#ffffff',
             'circle-stroke-width': 3,
             'circle-opacity': 0.8,
           },
         });
 
-        // Add hover effect
-        map.on('mouseenter', 'schools-circles', () => {
-          map.getCanvas().style.cursor = 'pointer';
+        // Champion circles with golden border
+        map.addLayer({
+          id: 'champion-circles',
+          type: 'circle',
+          source: 'schools',
+          filter: ['>', ['get', 'championCount'], 0],
+          paint: {
+            'circle-radius': ['get', 'size'],
+            'circle-color': ['get', 'color'], // Use the donation-based color
+            'circle-stroke-color': '#FFD700',
+            'circle-stroke-width': 5,
+            'circle-opacity': 0.9,
+          },
         });
 
-        map.on('mouseleave', 'schools-circles', () => {
-          map.getCanvas().style.cursor = '';
+        // Add hover effects for all circle layers
+        const allCircleLayerIds = ['champion-pulse', 'donation-circles', 'champion-circles'];
+
+        allCircleLayerIds.forEach((layerId) => {
+          map.on('mouseenter', layerId, () => {
+            map.getCanvas().style.cursor = 'pointer';
+          });
+
+          map.on('mouseleave', layerId, () => {
+            map.getCanvas().style.cursor = '';
+          });
         });
 
-        // Add click event
-        map.on('click', 'schools-circles', (e: { features?: unknown[] }) => {
+        // Shared click handler for both layers
+        const handleRegionClick = (e: { features?: unknown[] }) => {
           if (e.features && e.features[0]) {
             const feature = e.features[0] as {
               geometry: { coordinates: [number, number] };
@@ -469,6 +606,8 @@ export default function NeedsMap() {
                 donationCount: number;
                 highestSingleDonationCents: number;
                 goalCents: number;
+                championCount: number;
+                leadChampionName?: string;
               };
             };
             const props = feature.properties;
@@ -480,6 +619,8 @@ export default function NeedsMap() {
               donationCount: props.donationCount,
               highestSingleDonationCents: props.highestSingleDonationCents,
               goalCents: props.goalCents,
+              championCount: props.championCount,
+              leadChampionName: props.leadChampionName,
               lat: feature.geometry.coordinates[1],
               lng: feature.geometry.coordinates[0],
             };
@@ -494,6 +635,11 @@ export default function NeedsMap() {
               duration: 1000,
             });
           }
+        };
+
+        // Add click events for all circle layers
+        allCircleLayerIds.forEach((layerId) => {
+          map.on('click', layerId, handleRegionClick);
         });
 
         // Focus on specific region if specified
@@ -510,15 +656,49 @@ export default function NeedsMap() {
             });
           }
         }
+        // Add pulsing animation for champion markers
+        let animationFrame: number;
+        let startTime = Date.now();
+        
+        const animateChampionMarkers = () => {
+          const elapsed = Date.now() - startTime;
+          const pulseValue = (Math.sin(elapsed / 800) + 1) / 2; // 0 to 1
+          
+          // Animate champion pulse layer
+          const layerId = 'champion-pulse';
+          if (map.getLayer(layerId)) {
+            (map as any).setPaintProperty(layerId, 'circle-opacity', pulseValue * 0.4 + 0.1);
+            (map as any).setPaintProperty(layerId, 'circle-radius', 
+              ['+', ['get', 'size'], 10 + pulseValue * 8]
+            );
+          }
+          
+          animationFrame = requestAnimationFrame(animateChampionMarkers);
+        };
+        
+        animateChampionMarkers();
+        
+        // Store animation frame for cleanup
+        (map as any).__animationFrame = animationFrame;
       }, 300);
     });
 
     mapRef.current = map;
 
     return () => {
-      if (map.getLayer('schools-circles')) {
-        map.removeLayer('schools-circles');
+      // Clean up animation
+      const currentMap = mapRef.current;
+      if (currentMap && (currentMap as any).__animationFrame) {
+        cancelAnimationFrame((currentMap as any).__animationFrame);
       }
+      // Remove all circle layers
+      const layersToRemove = ['champion-pulse', 'donation-circles', 'champion-circles'];
+      layersToRemove.forEach((layerId) => {
+        if (map.getLayer(layerId)) {
+          map.removeLayer(layerId);
+        }
+      });
+      
       if (map.getSource('schools')) {
         map.removeSource('schools');
       }
@@ -578,9 +758,14 @@ export default function NeedsMap() {
             ))}
           </div>
 
-          <a href={`/leaderboard?country=${country}`} className="view-toggle">
-            ← Table View
-          </a>
+          <div className="view-controls">
+            <a href={`/leaderboard?country=${country}`} className="view-toggle">
+              ← Table View
+            </a>
+            <a href={`/dashboard?country=${country}`} className="dashboard-btn">
+              🏆 Live View
+            </a>
+          </div>
         </div>
       </div>
 

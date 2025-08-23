@@ -168,6 +168,11 @@
 
 .leaderboard-table th:nth-child(6) {
   text-align: center;
+  width: 120px;
+}
+
+.leaderboard-table th:nth-child(7) {
+  text-align: center;
   width: 150px;
 }
 
@@ -192,6 +197,53 @@
 
 .leaderboard-table td:nth-child(6) {
   text-align: center;
+}
+
+.leaderboard-table td:nth-child(7) {
+  text-align: center;
+}
+
+.champions-cell-link {
+  text-decoration: none;
+  display: block;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.champions-cell-link:hover {
+  background: rgba(255, 215, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.champions-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.champion-badge {
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFD700;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.lead-champion-name {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.no-champions {
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
 }
 
 .champion-btn {
@@ -227,4 +279,98 @@
   margin-top: 16px;
   padding-top: 16px;
   border-top: 1px solid #e0e0e0;
+}
+
+/* Gamification Styles */
+.region-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.region-name {
+  font-weight: 500;
+}
+
+.champion-indicator {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+.quest-level-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 120px;
+}
+
+.quest-level-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.quest-emoji {
+  font-size: 1rem;
+}
+
+.quest-name {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.quest-progress-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.quest-progress-bar-mini {
+  height: 3px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.quest-progress-fill-mini {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.quest-progress-text-mini {
+  font-size: 0.625rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.dashboard-option {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dashboard-option:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  text-decoration: none;
+  color: white;
 }
