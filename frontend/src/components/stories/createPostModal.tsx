@@ -30,19 +30,21 @@ export function CreatePostModal({
   const [author, setAuthor] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // const file = event.target.files?.[0];
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.onload = (e) => {
-    //     setSelectedImage(e.target?.result as string);
-    //   };
-    //   reader.readAsDataURL(file);
-    // }
-    setSelectedImage(
-      "https://reach.org.hk/_assets/media/249dbbdf026cabf4f1b434f666385116.jpg"
-    ); // to be changed
-  };
+  const handleImageUpload = () =>
+    // event: React.ChangeEvent<HTMLInputElement>
+    {
+      // const file = event.target.files?.[0];
+      // if (file) {
+      //   const reader = new FileReader();
+      //   reader.onload = (e) => {
+      //     setSelectedImage(e.target?.result as string);
+      //   };
+      //   reader.readAsDataURL(file);
+      // }
+      setSelectedImage(
+        "https://reach.org.hk/_assets/media/249dbbdf026cabf4f1b434f666385116.jpg"
+      ); // to be changed
+    };
 
   const handleSubmit = async () => {
     try {

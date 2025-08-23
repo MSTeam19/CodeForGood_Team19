@@ -26,10 +26,10 @@ export default function PostPage() {
   };
 
   const [sortBy, setSortBy] = useState("newest");
-  const [posts, setPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState<unknown[]>([]);
+  // const [loading, setLoading] = useState(true);
 
-  const handlePostCreated = (newPost: any) => {
+  const handlePostCreated = (newPost: unknown) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
   };
 
@@ -56,8 +56,6 @@ export default function PostPage() {
         setPosts(data);
       } catch (err) {
         console.error("Error fetching posts:", err);
-      } finally {
-        setLoading(false);
       }
     };
 
