@@ -12,9 +12,19 @@ import {
   InputLabel,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { useAuth } from "../contexts/authContext";
+
+import "./postPage.css";
 
 export default function PostPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const { isAuthenticated } = useAuth();
+
+  const handleCreatePost = () => {
+    setIsCreateModalOpen(true);
+  };
+
   const [sortBy, setSortBy] = useState("newest");
   // const [posts, setPosts] = useState<any[]>([]);
   // const [loading, setLoading] = useState(true);
@@ -34,6 +44,7 @@ export default function PostPage() {
 
   //   fetchPosts();
   // }, []);
+
 
   const mockPosts = [
     {
@@ -80,6 +91,21 @@ export default function PostPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
+
+      {isAuthenticated && (
+        <div
+          style={{ display: "flex", justifyContent: "flex-end", padding: "16px" }}
+        >
+          <Button
+            onClick={handleCreatePost}
+            className="btn-primary"
+          >
+            <AddIcon className="w-4 h-4 mr-2" />
+            Create post
+          </Button>
+        </div>
+      )}
+
       <Box
         display="flex"
         justifyContent="space-between"
@@ -118,6 +144,7 @@ export default function PostPage() {
         </Button>
       </Box>
 
+
       {/* Posts Grid */}
       <main className="max-w-6xl mx-auto px-4 py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -131,6 +158,7 @@ export default function PostPage() {
         </div>
       </main>
 
+      {/* Modals */}
       <CreatePostModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}

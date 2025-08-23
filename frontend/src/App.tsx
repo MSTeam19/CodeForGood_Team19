@@ -1,7 +1,8 @@
 import { Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/authContext";
 import Home from "./pages/home";
-import Footer from "./components/footer";
-import Header from "./components/header";
+import Footer from "./components/footer/footer";
+import Header from "./components/header/header";
 import Leaderboard from "./pages/leaderboard";
 import NeedsMap from "./pages/needs-map";
 import PostPage from "./pages/postPage";
