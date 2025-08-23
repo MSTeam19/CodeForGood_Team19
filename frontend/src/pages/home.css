@@ -10,7 +10,13 @@
 .hero-section {
   position: relative;
   min-height: 100vh;
-  background: linear-gradient(135deg, #00796b 0%, #00695c 100%);
+  background: 
+    linear-gradient(135deg, rgba(0, 121, 107, 0.75) 0%, rgba(0, 105, 92, 0.85) 100%), 
+    url('/abc-pathways.jpg'),
+    linear-gradient(135deg, #00796b 0%, #00695c 100%);
+  background-size: cover, cover, cover;
+  background-position: center, center, center;
+  background-attachment: fixed, fixed, fixed;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,7 +24,42 @@
   overflow: hidden;
 }
 
+/* Hero Image Enhancement */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at center, rgba(0, 121, 107, 0.3) 0%, rgba(0, 105, 92, 0.6) 100%);
+  z-index: 1;
+}
+
+/* Animated particles effect for hero */
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.3), transparent);
+  background-repeat: repeat;
+  background-size: 150px 150px;
+  animation: sparkle 20s linear infinite;
+  z-index: 1;
+  opacity: 0.6;
+}
+
 .hero-content {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1fr 300px;
   gap: 60px;
@@ -26,7 +67,6 @@
   max-width: 1200px;
   padding: 0 40px;
   align-items: center;
-  z-index: 2;
 }
 
 .hero-text {
@@ -40,6 +80,7 @@
   margin-bottom: 24px;
   display: flex;
   flex-direction: column;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .title-main {
@@ -63,6 +104,7 @@
   color: #e0f2fd;
   margin-bottom: 40px;
   animation: fadeInUp 1s ease-out 0.6s both;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .hero-actions {
@@ -445,5 +487,14 @@ div.stats-section div.stat-card div.stat-label-large {
   }
   50% {
     transform: scale(1.05);
+  }
+}
+
+@keyframes sparkle {
+  0% {
+    background-position: 0px 0px, 40px 60px, 130px 270px, 70px 100px;
+  }
+  100% {
+    background-position: 150px 150px, 190px 210px, 280px 420px, 220px 250px;
   }
 }
