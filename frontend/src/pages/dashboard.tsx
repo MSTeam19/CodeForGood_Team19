@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { 
   getQuestLevel, 
-  getQuestProgress, 
   getChampionPower, 
   getPowerLevel, 
   getPowerProgress, 
-  QUEST_LEVELS,
-  POWER_LEVELS 
+  QUEST_LEVELS
 } from '../utils/gamification';
 import './dashboard.css';
 
@@ -173,7 +171,7 @@ function formatTimeAgo(timestamp: number) {
 
 export default function Dashboard() {
   const [searchParams] = useSearchParams();
-  const [country, setCountry] = useState<string>(searchParams.get('country') || 'ALL');
+  const [country] = useState<string>(searchParams.get('country') || 'ALL');
   const [data, setData] = useState<LeaderboardResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -353,7 +351,7 @@ export default function Dashboard() {
                   )}
                   {activity.type === 'large_donation' && (
                     <div>
-                      Large donation of <strong>{formatCurrency(activity.amount * 100)}</strong> received in <em>{activity.regionName}</em>!
+                      Large donation of <strong>{formatCurrency((activity.amount || 0) * 100)}</strong> received in <em>{activity.regionName}</em>!
                     </div>
                   )}
                   {activity.type === 'power_level_up' && (

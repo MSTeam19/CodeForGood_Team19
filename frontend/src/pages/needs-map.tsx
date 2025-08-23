@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { getQuestLevel, getQuestProgress, QUEST_LEVELS } from '../utils/gamification';
+import { getQuestLevel, getQuestProgress } from '../utils/gamification';
 import './needs-map.css';
 
 // Types matching the existing leaderboard
@@ -657,7 +657,7 @@ export default function NeedsMap() {
           }
         }
         // Add pulsing animation for champion markers
-        let animationFrame: number;
+        let animationFrame: number = 0;
         let startTime = Date.now();
         
         const animateChampionMarkers = () => {
