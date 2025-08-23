@@ -1,33 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
 import {
+  CircularProgress,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
-  DialogActions,
   IconButton,
   TextField,
   TextareaAutosize,
 } from "@mui/material";
-import Button from "@mui/material/Button";
-// import TextareaAutosize from "@mui/material/TextareaAutosize";
-// import { X, ImageIcon } from "lucide-react";
 import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import React, { useState } from "react";
 
 interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onPostCreated?: (newPost: any) => void;
 }
 
-export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
-  const [caption, setCaption] = useState("");
-  const [name, setName] = useState("");
+export function CreatePostModal({
+  isOpen,
+  onClose,
+  onPostCreated,
+}: CreatePostModalProps) {
+  const [description, setDescription] = useState("");
+  const [author, setAuthor] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onload = (e) => {
         setSelectedImage(e.target?.result as string);
@@ -36,18 +43,88 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Creating post:", { caption, image: selectedImage });
+  const uploadImageToBackend = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append("image", file);
 
-    // reset and close
-    setCaption("");
-    setSelectedImage(null);
-    onClose();
+    try {
+      const response = await fetch("http://localhost:3000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        return result.url;
+      } else {
+        throw new Error(result.error || "Upload failed");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      throw error;
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!selectedFile || !description.trim() || !author.trim()) {
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const imageUrl = await uploadImageToBackend(selectedFile);
+
+      console.log("Creating post:", {
+        author,
+        description,
+        imageUrl,
+      });
+
+      setSelectedImage(imageUrl);
+
+      const response = await fetch("http://localhost:3000/posts/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          author,
+          description,
+          photo_url: imageUrl, // to be changed
+          created_at: new Date().toISOString(),
+        }),
+      });
+
+      alert("🎉 Image uploaded successfully! Your post has been created.");
+
+      if (!response.ok) {
+        throw new Error("Failed to create post");
+      }
+
+      const data = await response.json();
+      console.log("Post created:", data);
+      onPostCreated?.(data[0]);
+      setAuthor("");
+      setDescription("");
+      setSelectedImage(null);
+      onClose();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleClose = () => {
-    setCaption("");
+    setDescription("");
+    setAuthor("");
     setSelectedImage(null);
+    setSelectedFile(null);
     onClose();
   };
 
@@ -57,15 +134,16 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
 
       <DialogContent>
         <div className="space-y-2">
-          <h3 className="font-semibold">Name</h3>
+          <h3 className="font-semibold">Author</h3>
           <TextField
-            id="name"
+            id="author"
             placeholder="Fill in your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
             className="w-full border rounded-md p-2 min-h-[100px] resize-none"
           />
         </div>
+
         {/* Image Upload */}
         <div className="space-y-2 mb-4">
           <h3 className="font-semibold">Image</h3>
@@ -79,9 +157,12 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
               <IconButton
                 size="small"
                 className="absolute top-2 right-2 bg-white/80"
-                onClick={() => setSelectedImage(null)}
+                onClick={() => {
+                  setSelectedImage(null);
+                  setSelectedFile(null);
+                }}
               >
-                {/* <X className="w-4 h-4" /> */}
+                ✕
               </IconButton>
             </div>
           ) : (
@@ -99,7 +180,7 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
               >
                 <Avatar className="w-8 h-8" />
                 <span>Click to upload an image</span>
-                <span className="text-xs">PNG, JPG, GIF up to 10MB</span>
+                <span className="text-xs">PNG, JPG, GIF up to 5MB</span>
               </label>
             </div>
           )}
@@ -107,26 +188,35 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
 
         {/* Caption */}
         <div className="space-y-2">
-          <h3 className="font-semibold">Caption</h3>
+          <h3 className="font-semibold">Description</h3>
           <TextareaAutosize
-            id="caption"
-            placeholder="Write a caption..."
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
+            id="description"
+            placeholder="Write a description..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className="w-full border rounded-md p-2 min-h-[100px] resize-none"
           />
         </div>
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleClose} disabled={uploading}>
+          Cancel
+        </Button>
         <Button
           onClick={handleSubmit}
-          disabled={!selectedImage || !caption.trim()}
+          disabled={!selectedImage || !description.trim()}
           variant="contained"
           color="primary"
         >
-          Share Post
+          {uploading ? (
+            <>
+              <CircularProgress size={20} className="mr-2" />
+              Uploading...
+            </>
+          ) : (
+            "Share Post"
+          )}
         </Button>
       </DialogActions>
     </Dialog>
