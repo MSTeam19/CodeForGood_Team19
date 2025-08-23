@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const donations = require("../model/donations");
+const posts = require("../model/posts");
 
 router.get("/", async (req, res) => {
   try {
-    res.status(200).json("Health Check For Donations: Success!");
+    res.status(200).json("Successfully checked for posts!");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -12,9 +12,9 @@ router.get("/", async (req, res) => {
 
 router.get("/all", async (req, res) => {
   try {
-    const allDonations = await donations.getAllDonations;
+    const allPosts = await posts.getAllPosts();
 
-    res.status(200).json(allDonations);
+    res.status(200).json(allPosts);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

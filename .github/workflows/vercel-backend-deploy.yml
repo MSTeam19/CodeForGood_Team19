@@ -1,0 +1,107 @@
+name: Deploy backend to Vercel
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/vercel-backend-deploy.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/vercel-backend-deploy.yml'
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: vercel-backend-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20.x'
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_BACKEND_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_BACKEND_PROJECT_ID }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+jobs:
+  preview:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Vercel Pull (preview)
+        run: vercel pull --cwd . --yes --environment=preview --token=$VERCEL_TOKEN
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build (prebuilt artifacts)
+        run: vercel build --cwd . --token=$VERCEL_TOKEN
+
+      - name: Deploy Preview
+        id: deploy
+        run: |
+          URL=$(vercel deploy --cwd . --prebuilt --token=$VERCEL_TOKEN)
+          echo "url=$URL" >> $GITHUB_OUTPUT
+
+      - name: Comment Preview URL
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            **Backend Preview** ready: ${{ steps.deploy.outputs.url }}
+
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Vercel Pull (production)
+        run: vercel pull --cwd . --yes --environment=production --token=$VERCEL_TOKEN
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build (prebuilt artifacts)
+        run: vercel build --cwd . --prod --token=$VERCEL_TOKEN
+
+      - name: Deploy to Production
+        id: deploy
+        run: |
+          URL=$(vercel deploy --cwd . --prebuilt --prod --token=$VERCEL_TOKEN)
+          echo "url=$URL" >> $GITHUB_OUTPUT
+
+      - name: Summary
+        run: |
+          echo "Backend deployed to **Production**: ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
