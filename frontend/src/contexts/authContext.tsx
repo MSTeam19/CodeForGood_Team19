@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer, useEffect, type ReactNode } from 'react';
 
-const BE_URL = import.meta.env.VITE_BE_URL || 'http://localhost:3000';
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 interface User {
   id: string;
@@ -100,7 +100,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const login = async (email: string, password: string): Promise<boolean> => {
     dispatch({ type: 'AUTH_START' });
     try {
-      const response = await fetch(`${BE_URL}/user/login`, {
+      const response = await fetch(`${VITE_API_BASE_URL}/user/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -124,7 +124,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const register = async (email: string, password: string, name: string): Promise<boolean> => {
     dispatch({ type: 'AUTH_START' });
     try {
-      const response = await fetch(`${BE_URL}/user/register`, {
+      const response = await fetch(`${VITE_API_BASE_URL}/user/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name }),

@@ -21,10 +21,6 @@ export default function PostPage() {
 
   const { isAuthenticated } = useAuth();
 
-  const handleCreatePost = () => {
-    setIsCreateModalOpen(true);
-  };
-
   const [sortBy, setSortBy] = useState("newest");
   const [posts, setPosts] = useState<any[]>([]);
   // const [loading, setLoading] = useState(true);
@@ -66,21 +62,6 @@ export default function PostPage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
 
-      {isAuthenticated && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            padding: "16px",
-          }}
-        >
-          <Button onClick={handleCreatePost} className="btn-primary">
-            <AddIcon className="w-4 h-4 mr-2" />
-            Create post
-          </Button>
-        </div>
-      )}
-
       <Box
         display="flex"
         justifyContent="space-between"
@@ -110,14 +91,17 @@ export default function PostPage() {
         >
           Personal Stories
         </h1>
-        <Button
-          onClick={() => setIsCreateModalOpen(true)}
-          // variant="contained"
-          style={{ color: "#00796b" }}
-          startIcon={<AddIcon />}
-        >
-          Create Post
-        </Button>
+        
+        {isAuthenticated && (
+          <Button
+            onClick={() => setIsCreateModalOpen(true)}
+            // variant="contained"
+            style={{ color: "#00796b" }}
+            startIcon={<AddIcon />}
+          >
+            Create Post
+          </Button>
+        )}
       </Box>
 
       {/* Posts Grid */}
