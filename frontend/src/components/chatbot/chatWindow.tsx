@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, type FormEvent } from 'react';
-import './ChatWindow.css';
+import './chatbot.css';
 
 interface Message {
   id: number;
