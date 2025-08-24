@@ -1,4 +1,3 @@
-import React from 'react';
 
 function BotMessage({ text }: { text: string }) {
   const containsList = text.includes('\n\n•');
