@@ -48,10 +48,15 @@ export function CreatePostModal({
     formData.append("image", file);
 
     try {
-      const response = await fetch("http://localhost:3000/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"
+        }/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -89,18 +94,23 @@ export function CreatePostModal({
 
       setSelectedImage(imageUrl);
 
-      const response = await fetch("http://localhost:3000/posts/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          author,
-          description,
-          photo_url: imageUrl, // to be changed
-          created_at: new Date().toISOString(),
-        }),
-      });
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"
+        }/posts/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            author,
+            description,
+            photo_url: imageUrl, // to be changed
+            created_at: new Date().toISOString(),
+          }),
+        }
+      );
 
       alert("🎉 Image uploaded successfully! Your post has been created.");
 
