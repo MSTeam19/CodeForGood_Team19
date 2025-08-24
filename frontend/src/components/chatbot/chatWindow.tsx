@@ -188,7 +188,7 @@ const ChatWindow = ({ onClose }: { onClose: () => void }) => {
         return (
           <div className="chat-buttons">
             <button onClick={() => handleMainMenuSelect('active_campaigns', 'View Active Campaigns')}>View Active Campaigns</button>
-            <button onClick={() => handleMainMenuSelect('donation_options', 'How to Donate')}>How to Donate</button>
+            <button onClick={() => handleMainMenuSelect('donation_options', 'How do Donations work?')}>Donations</button>
             <button onClick={() => handleMainMenuSelect('contact_us', 'How do I contact you?')}>Contact Us</button>
             <button onClick={() => handleMainMenuSelect('ask_something', 'Ask something else...')}>Ask something else...</button>
           </div>
@@ -208,7 +208,7 @@ const ChatWindow = ({ onClose }: { onClose: () => void }) => {
         return (
           <div className="chat-buttons">
             <button onClick={() => handleStaticKnowledgeQuery('how_to_donate', 'How can I donate?')}>How to Donate</button>
-            <button onClick={() => handleStaticKnowledgeQuery('donation_tiers', 'What are the donation tiers?')}>Donation Tiers</button>
+            <button onClick={() => handleStaticKnowledgeQuery('impact_stories', 'What are the impact stories?')}>Impact Stories</button>
             <button onClick={handleGoBack} className="back-button">‹ Back to Main Menu</button>
           </div>
         );
