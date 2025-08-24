@@ -26,23 +26,32 @@ export default function PostPage() {
   // const [loading, setLoading] = useState(true);
 
   const handlePostCreated = (newPost: any) => {
-    setPosts((prevPosts) => [newPost, ...prevPosts]);
+    // Validate the new post has required fields before adding to state
+    if (newPost && newPost.id && typeof newPost === 'object') {
+      setPosts((prevPosts) => [newPost, ...prevPosts]);
+    } else {
+      console.error('Invalid post object received:', newPost);
+      // Optionally, refetch all posts to ensure consistency
+      window.location.reload(); // Simple solution to refresh the posts
+    }
   };
 
-  const sortedPosts = [...posts].sort((a, b) => {
-    if (sortBy === "newest") {
-      return (
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
-    } else if (sortBy === "oldest") {
-      return (
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      );
-    } else if (sortBy === "author") {
-      return a.author.localeCompare(b.author);
-    }
-    return 0;
-  });
+  const sortedPosts = [...posts]
+    .filter((post) => post && post.id) // Filter here too for extra safety
+    .sort((a, b) => {
+      if (sortBy === "newest") {
+        return (
+          new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()
+        );
+      } else if (sortBy === "oldest") {
+        return (
+          new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime()
+        );
+      } else if (sortBy === "author") {
+        return (a.author || "").localeCompare(b.author || "");
+      }
+      return 0;
+    });
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -53,9 +62,17 @@ export default function PostPage() {
           }/posts/all`
         );
         const data = await res.json();
-        setPosts(data);
+        console.log("Fetched posts data:", data); // Debug log
+        
+        // Ensure data is an array and filter out invalid posts
+        const validPosts = Array.isArray(data) 
+          ? data.filter(post => post && typeof post === 'object' && post.id)
+          : [];
+          
+        setPosts(validPosts);
       } catch (err) {
         console.error("Error fetching posts:", err);
+        setPosts([]); // Set empty array on error
       }
     };
 
@@ -112,7 +129,9 @@ export default function PostPage() {
       <main className="max-w-6xl mx-auto px-4 py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedPosts.length > 0 ? (
-            sortedPosts.map((post) => <PostCard key={post.id} post={post} />)
+            sortedPosts
+              .filter((post) => post && post.id) // Filter out undefined/null posts or posts without id
+              .map((post) => <PostCard key={post.id} post={post} />)
           ) : (
             <div>No posts available</div>
           )}
