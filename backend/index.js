@@ -33,6 +33,10 @@ const hf = new HfInference(hfToken);
 app.use(cors());
 app.use(express.json());
 
+// Import and use API routes
+const apiRouter = require('./api');
+app.use('/', apiRouter);
+
 
 async function realBotHandler(request, response) {
   console.log("\n--- New /api/bot request ---");
