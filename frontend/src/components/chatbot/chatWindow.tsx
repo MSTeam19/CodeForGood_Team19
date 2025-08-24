@@ -1,14 +1,11 @@
 import { useState, useRef, useEffect, type FormEvent } from 'react';
 import './ChatWindow.css';
-import { mockKnowledgeBase, mockProjects } from './tempMockTest';
 
 interface Message {
   id: number;
   text: string;
   sender: 'user' | 'bot';
 }
-
-// using mock data for now
 
 const ChatWindow = ({ onClose }: { onClose: () => void }) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -33,8 +30,7 @@ const ChatWindow = ({ onClose }: { onClose: () => void }) => {
   // call the backend API for RAG
   const generateRAGResponse = async (query: string): Promise<string> => {
     try {
-      // simplified API approach: combine knowledge base into a single context string to send to the backend
-      // chg to fetch from supabase
+      // fetch knowledge base from supabase
       const context = mockKnowledgeBase
         .map(doc => doc.content)
         .join('\n\n---\n\n');
