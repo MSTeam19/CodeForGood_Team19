@@ -1,0 +1,30 @@
+-- Add champions data to the leaderboard materialized view
+DROP MATERIALIZED VIEW IF EXISTS leaderboard_region;
+
+CREATE MATERIALIZED VIEW leaderboard_region AS
+SELECT 
+  r.id as region_id,
+  r.name,
+  r.country,
+  r.lat,
+  r.lng,
+  r.goal_cents,
+  COALESCE(SUM(d.amount_cents), 0) as total_amount_cents,
+  COALESCE(COUNT(d.id), 0) as donation_count,
+  COALESCE(MAX(d.amount_cents), 0) as highest_single_donation_cents,
+  COALESCE(COUNT(DISTINCT c.id), 0) as champion_count,
+  COALESCE(MAX(CASE WHEN c.is_lead_champion = true THEN c.name END), NULL) as lead_champion_name,
+  COALESCE(MAX(CASE WHEN c.is_lead_champion = true THEN c.id END), NULL) as lead_champion_id,
+  r.created_at
+FROM regions r
+LEFT JOIN donations d ON r.id = d.region_id
+LEFT JOIN champions c ON r.id = c.region_id AND c.status = 'active'
+GROUP BY r.id, r.name, r.country, r.lat, r.lng, r.goal_cents, r.created_at;
+
+-- Update the refresh function to handle the new view
+CREATE OR REPLACE FUNCTION refresh_leaderboard_region()
+RETURNS void AS $$
+BEGIN
+  REFRESH MATERIALIZED VIEW leaderboard_region;
+END;
+$$ LANGUAGE plpgsql;

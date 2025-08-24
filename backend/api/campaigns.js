@@ -230,7 +230,10 @@ router.get('/:id/leaderboard', async (req, res) => {
         highestSingleDonationCents: parseInt(row.highest_single_donation_cents) || 0,
         lat: parseFloat(row.lat),
         lng: parseFloat(row.lng),
-        goalCents: parseInt(row.goal_cents) || 0
+        goalCents: parseInt(row.goal_cents) || 0,
+        championCount: parseInt(row.champion_count) || 0,
+        leadChampionName: row.lead_champion_name,
+        leadChampionId: row.lead_champion_id
       })),
       updatedAt: new Date().toISOString()
     };

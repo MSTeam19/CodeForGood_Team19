@@ -292,4 +292,50 @@ router.get('', async (req, res) => {
   }
 });
 
+// GET /regions/:id/champions - Get champions for a specific region
+router.get('/:id/champions', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { data, error } = await supabase
+      .from('champions')
+      .select('*')
+      .eq('region_id', id)
+      .eq('status', 'active')
+      .order('is_lead_champion', { ascending: false })
+      .order('joined_date');
+
+    if (error) {
+      console.error('Champions query error:', error);
+      return res.status(500).json({
+        error: 'Failed to fetch champions',
+        details: error.message
+      });
+    }
+
+    const response = {
+      regionId: id,
+      champions: data.map(champion => ({
+        championId: champion.id,
+        name: champion.name,
+        email: champion.email,
+        organization: champion.organization,
+        message: champion.message,
+        isLeadChampion: champion.is_lead_champion,
+        joinedDate: champion.joined_date,
+        createdAt: champion.created_at
+      }))
+    };
+
+    res.json(response);
+
+  } catch (error) {
+    console.error('Champions endpoint error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: error.message
+    });
+  }
+});
+
 module.exports = router;

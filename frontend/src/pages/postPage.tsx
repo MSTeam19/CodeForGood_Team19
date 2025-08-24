@@ -7,7 +7,7 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Select
+  Select,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { CreatePostModal } from "../components/stories/createPostModal";
@@ -47,7 +47,11 @@ export default function PostPage() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch("http://localhost:3000/posts/all");
+        const res = await fetch(
+          `${
+            import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"
+          }/posts/all`
+        );
         const data = await res.json();
         setPosts(data);
       } catch (err) {
@@ -91,7 +95,7 @@ export default function PostPage() {
         >
           Personal Stories
         </h1>
-        
+
         {isAuthenticated && (
           <Button
             onClick={() => setIsCreateModalOpen(true)}
