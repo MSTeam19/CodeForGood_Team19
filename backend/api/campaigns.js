@@ -1,5 +1,6 @@
 const express = require('express');
 const { supabase } = require('../db/supabase');
+const campaignsModel = require('../model/campaigns');
 const router = express.Router();
 
 // POST /campaigns - Create new campaign
@@ -229,7 +230,10 @@ router.get('/:id/leaderboard', async (req, res) => {
         highestSingleDonationCents: parseInt(row.highest_single_donation_cents) || 0,
         lat: parseFloat(row.lat),
         lng: parseFloat(row.lng),
-        goalCents: parseInt(row.goal_cents) || 0
+        goalCents: parseInt(row.goal_cents) || 0,
+        championCount: parseInt(row.champion_count) || 0,
+        leadChampionName: row.lead_champion_name,
+        leadChampionId: row.lead_champion_id
       })),
       updatedAt: new Date().toISOString()
     };
@@ -238,6 +242,20 @@ router.get('/:id/leaderboard', async (req, res) => {
 
   } catch (error) {
     console.error('Leaderboard endpoint error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: error.message
+    });
+  }
+});
+
+// get all campaigns
+router.get('', async (req, res) => {
+  try {
+    const data = await campaignsModel.getAllCampaigns();
+    res.json(data);
+  } catch (error) {
+    console.error('Campaigns endpoint error:', error);
     res.status(500).json({
       error: 'Internal server error',
       message: error.message

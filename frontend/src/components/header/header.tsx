@@ -39,7 +39,10 @@ function Header() {
             <a href="/" className="header-btn">Home</a>
             <a href="/leaderboard" className="header-btn">Leaderboard</a>
             <a href="/stories" className="header-btn">Stories</a>
-            
+            {user?.roles?.includes('Staff') && (
+              <a href="/admin" className="header-btn">Admin</a>
+            )}
+
             {isAuthenticated ? (
               <div className="user-menu">
                 <button 
