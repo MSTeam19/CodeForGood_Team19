@@ -2,14 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import './home.css';
 
 function Home() {
-  const [statsAnimated, setStatsAnimated] = useState(false);
   const [currentStat, setCurrentStat] = useState(0);
   const [showFloatingButton, setShowFloatingButton] = useState(false);
   const [currentChampion, setCurrentChampion] = useState(0);
   
   // Refs for scroll animations
   const heroRef = useRef<HTMLElement>(null);
-  const statsRef = useRef<HTMLElement>(null);
   const missionRef = useRef<HTMLElement>(null);
   const ctaRef = useRef<HTMLElement>(null);
 
@@ -134,11 +132,9 @@ function Home() {
     const elements = document.querySelectorAll('.scroll-animate');
     elements.forEach(el => observer.observe(el));
     
-    const timer = setTimeout(() => setStatsAnimated(true), 500);
     
     return () => {
       elements.forEach(el => observer.unobserve(el));
-      clearTimeout(timer);
     };
   }, []);
 
