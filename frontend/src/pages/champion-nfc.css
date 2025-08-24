@@ -1,0 +1,538 @@
+/* Champion NFC Profile Page */
+.champion-nfc-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0f2fd 0%, #b2dfdb 50%, #FFFDE7 100%);
+  padding: 20px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-overflow-scrolling: touch;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.champion-nfc-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Verification Header */
+.verification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.verification-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.verify-icon {
+  font-size: 1.1rem;
+}
+
+.reach-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-weight: 800;
+}
+
+.reach-text {
+  font-size: 1.5rem;
+  color: #00796b;
+  line-height: 1;
+}
+
+.hk-text {
+  font-size: 0.8rem;
+  color: #0288d1;
+  letter-spacing: 1px;
+}
+
+/* Main Profile Card */
+.champion-profile-card {
+  background: white;
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0, 121, 107, 0.15);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.champion-profile-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #00796b 0%, #0288d1 50%, #FFD700 100%);
+  border-radius: 24px 24px 0 0;
+}
+
+/* Champion Header */
+.champion-header {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 25px;
+  padding-top: 10px;
+}
+
+.champion-avatar-nfc {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 121, 107, 0.3);
+  border: 4px solid #FFD700;
+}
+
+.champion-avatar-nfc img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-fallback {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #00796b 0%, #0288d1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+.lead-champion-crown {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #FFD700;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+.champion-info {
+  flex: 1;
+}
+
+.champion-name-nfc {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #00796b;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.champion-role-nfc {
+  font-size: 1.2rem;
+  color: #0288d1;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+}
+
+.champion-region {
+  font-size: 1rem;
+  color: #666;
+  margin: 0 0 5px 0;
+}
+
+.champion-since {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Quest Level Badge */
+.quest-level-badge-nfc {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 25px;
+  margin-bottom: 30px;
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.quest-emoji-nfc {
+  font-size: 1.3rem;
+}
+
+.quest-name-nfc {
+  font-size: 1.1rem;
+}
+
+/* Section Titles */
+.section-title-nfc {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #00796b;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #e0f2fd;
+  padding-bottom: 10px;
+}
+
+/* Impact Statistics */
+.impact-stats-section {
+  margin-bottom: 30px;
+}
+
+.stats-grid-nfc {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.stat-item-nfc {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  border: 2px solid #e0f2fd;
+  transition: all 0.3s ease;
+}
+
+.stat-item-nfc:hover,
+.stat-item-nfc:active {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 121, 107, 0.1);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .stat-item-nfc:hover {
+    transform: none;
+    box-shadow: 0 4px 15px rgba(0, 121, 107, 0.1);
+  }
+  
+  .stat-item-nfc:active {
+    transform: scale(0.98);
+  }
+}
+
+.stat-number-nfc {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #00796b;
+  margin-bottom: 5px;
+}
+
+.stat-label-nfc {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 600;
+}
+
+/* Achievements */
+.achievements-section {
+  margin-bottom: 30px;
+}
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #FFFDE7 0%, #F3E5F5 100%);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #e0f2fd;
+}
+
+.achievement-emoji {
+  font-size: 1.5rem;
+}
+
+.achievement-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #00796b;
+}
+
+/* QR Code Section */
+.qr-section {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 15px;
+}
+
+.qr-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #00796b;
+  margin-bottom: 15px;
+}
+
+.qr-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.qr-code-mock {
+  width: 100px;
+  height: 100px;
+  background: white;
+  border: 2px solid #00796b;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.qr-pattern {
+  width: 80%;
+  height: 80%;
+  background: 
+    linear-gradient(90deg, #00796b 50%, transparent 50%),
+    linear-gradient(#00796b 50%, transparent 50%);
+  background-size: 8px 8px;
+  opacity: 0.7;
+}
+
+.qr-instruction {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Footer */
+.profile-footer {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 2px solid #e0f2fd;
+}
+
+.footer-text {
+  font-size: 0.9rem;
+  color: #00796b;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+}
+
+.contact-info {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 0;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .champion-nfc-page {
+    padding: 15px;
+    background-attachment: scroll;
+  }
+  
+  .champion-nfc-container {
+    max-width: 100%;
+  }
+  
+  /* Header adjustments */
+  .verification-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .verification-badge {
+    padding: 10px 18px;
+    font-size: 0.85rem;
+  }
+  
+  .reach-text {
+    font-size: 1.3rem;
+  }
+  
+  /* Profile card adjustments */
+  .champion-profile-card {
+    padding: 25px 20px;
+    border-radius: 20px;
+  }
+  
+  /* Champion header mobile layout */
+  .champion-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .champion-avatar-nfc {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
+  
+  .lead-champion-crown {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+  
+  .champion-name-nfc {
+    font-size: 1.7rem;
+    line-height: 1.1;
+  }
+  
+  .champion-role-nfc {
+    font-size: 1.1rem;
+  }
+  
+  /* Quest badge mobile */
+  .quest-level-badge-nfc {
+    padding: 10px 20px;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+  }
+  
+  .quest-emoji-nfc {
+    font-size: 1.2rem;
+  }
+  
+  /* Section titles */
+  .section-title-nfc {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+  }
+  
+  /* Stats grid mobile - single column */
+  .stats-grid-nfc {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .stat-item-nfc {
+    padding: 18px;
+  }
+  
+  .stat-number-nfc {
+    font-size: 1.6rem;
+  }
+  
+  .stat-label-nfc {
+    font-size: 0.85rem;
+  }
+  
+  /* Achievements mobile - single column */
+  .achievements-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .achievement-item {
+    padding: 12px 15px;
+  }
+  
+  .achievement-emoji {
+    font-size: 1.3rem;
+  }
+  
+  .achievement-name {
+    font-size: 0.85rem;
+  }
+  
+  /* QR section mobile */
+  .qr-section {
+    padding: 18px;
+    margin-bottom: 25px;
+  }
+  
+  .qr-code-mock {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .qr-title {
+    font-size: 1rem;
+  }
+  
+  /* Footer mobile */
+  .profile-footer {
+    padding-top: 15px;
+  }
+  
+  .footer-text {
+    font-size: 0.85rem;
+  }
+  
+  .contact-info {
+    font-size: 0.75rem;
+  }
+}
+
+/* Small mobile phones */
+@media (max-width: 480px) {
+  .champion-nfc-page {
+    padding: 10px;
+  }
+  
+  .champion-profile-card {
+    padding: 20px 15px;
+  }
+  
+  .champion-name-nfc {
+    font-size: 1.5rem;
+  }
+  
+  .champion-role-nfc {
+    font-size: 1rem;
+  }
+  
+  .champion-avatar-nfc {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .verification-badge {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+  }
+  
+  .stat-item-nfc {
+    padding: 15px;
+  }
+  
+  .stat-number-nfc {
+    font-size: 1.4rem;
+  }
+  
+  .quest-level-badge-nfc {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .section-title-nfc {
+    font-size: 1.1rem;
+  }
+}
