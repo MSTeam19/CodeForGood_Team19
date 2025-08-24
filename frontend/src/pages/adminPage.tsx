@@ -12,8 +12,10 @@ import {
 } from "@mui/material";
 
 import "./adminPage.css"
-import { Add, Delete } from "@mui/icons-material";
+import { Add, Campaign, Delete, LocationCity } from "@mui/icons-material";
 import { DonationsModal } from "@/components/donationsModal/donationsModal";
+import { CampaignsModal } from "@/components/donationsModal/campaignsModal";
+import { RegionsModal } from "@/components/donationsModal/regionsModal";
 
 type Donation = {
   id: number;
@@ -40,10 +42,14 @@ function AdminPage() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [donationModalOpen, setDonationModalOpen] = useState(false);
+  const [campaignsModalOpen, setCampaignsModalOpen] = useState(false);
+  const [regionsModalOpen, setRegionsModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
   async function fetchDonations() {
     try {
@@ -97,23 +103,20 @@ function AdminPage() {
       );
       if (!res.ok) throw new Error("Failed to delete donation");
       setDonations((prev) => prev.filter((donation) => donation.id !== deleteId));
+      setSnackbarMessage("Donation deleted successfully!");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
     } catch (err: any) {
-      alert(err.message);
+      setSnackbarMessage(err.message);
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
     } finally {
       setConfirmOpen(false);
       setDeleteId(null);
     }
   };
 
-  const handleAddDonation = () => {
-    setModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
-
-  const handleModalSubmit = async (donation: any) => {
+  const handleDonationModalSubmit = async (donation: any) => {
     try {
       const { amount, ...rest } = donation;
       const payload = { ...rest, amountCents: amount * 100 };
@@ -127,9 +130,62 @@ function AdminPage() {
       await res.json();
       fetchDonations();
       setLoading(false);
+      setSnackbarMessage("Donation added successfully!");
+      setSnackbarSeverity("success");
       setSnackbarOpen(true);
     } catch (err: any) {
-      alert(err.message);
+      setSnackbarMessage(err.message);
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleCampaignsModalSubmit = async (campaign: any) => {
+    try {
+      const { amount, ...rest } = campaign;
+      const payload = { ...rest, goalCents: amount * 100 };
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"}/campaigns`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to add campaign");
+      setLoading(true);
+      await res.json();
+      fetchDonations();
+      setLoading(false);
+      setSnackbarMessage("Campaign added successfully!");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+    } catch (err: any) {
+      setSnackbarMessage(err.message);
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleRegionsModalSubmit = async (region: any) => {
+    try {
+      const { amount, ...rest } = region;
+      const payload = { ...rest, goalCents: amount * 100 };
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"}/regions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to add region");
+      setLoading(true);
+      await res.json();
+      fetchDonations();
+      setLoading(false);
+      setSnackbarMessage("Region added successfully!");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+    } catch (err: any) {
+      console.log(err);
+      setSnackbarMessage(err.message);
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
     }
   };
 
@@ -142,26 +198,52 @@ function AdminPage() {
           onClose={() => setSnackbarOpen(false)}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
-          <Alert severity="success" onClose={() => setSnackbarOpen(false)} sx={{ width: "100%" }}>
-            Donation added successfully!
+          <Alert severity={snackbarSeverity} onClose={() => setSnackbarOpen(false)} sx={{ width: "100%" }}>
+            {snackbarMessage}
           </Alert>
         </Snackbar>
         <div className="header-section">
           <Typography variant="h4" className="section-title" gutterBottom>
             All Donations
           </Typography>
-          <Button
-            style={{ color: "#00796b" }}
-            startIcon={<Add />}
-            onClick={handleAddDonation}
-          >
-            Add Donation
-          </Button>
+          <div className="header-actions">
+            <Button
+              style={{ color: "#00796b" }}
+              startIcon={<Add />}
+              onClick={() => setDonationModalOpen(true)}
+            >
+              Add Donation
+            </Button>
+            <Button
+              style={{ color: "#00796b" }}
+              startIcon={<Campaign />}
+              onClick={() => setCampaignsModalOpen(true)}
+            >
+              Add Campaign
+            </Button>
+            <Button
+              style={{ color: "#00796b" }}
+              startIcon={<LocationCity />}
+              onClick={() => setRegionsModalOpen(true)}
+            >
+              Add Region
+            </Button>
+          </div>
         </div>
         <DonationsModal
-          open={modalOpen}
-          onClose={handleModalClose}
-          onSubmit={handleModalSubmit}
+          open={donationModalOpen}
+          onClose={() => setDonationModalOpen(false)}
+          onSubmit={handleDonationModalSubmit}
+        />
+        <CampaignsModal
+          open={campaignsModalOpen}
+          onClose={() => setCampaignsModalOpen(false)}
+          onSubmit={handleCampaignsModalSubmit}
+        />
+        <RegionsModal
+          open={regionsModalOpen}
+          onClose={() => setRegionsModalOpen(false)}
+          onSubmit={handleRegionsModalSubmit}
         />
         {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
         {loading ? (
