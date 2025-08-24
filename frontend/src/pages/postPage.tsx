@@ -10,6 +10,7 @@ import {
   Select,
   useMediaQuery,
   useTheme,
+  LinearProgress,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { MobileBottomNav } from "../components/navigation/mobileBottomNav";
@@ -23,21 +24,22 @@ export default function PostPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { isAuthenticated } = useAuth();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [sortBy, setSortBy] = useState("newest");
   const [posts, setPosts] = useState<any[]>([]);
-  
+  const [loading, setLoading] = useState(true);
+
   const handleCreatePost = () => {
     setIsCreateModalOpen(true);
   };
 
   const handlePostCreated = (newPost: any) => {
     // Validate the new post has required fields before adding to state
-    if (newPost && newPost.id && typeof newPost === 'object') {
+    if (newPost && newPost.id && typeof newPost === "object") {
       setPosts((prevPosts) => [newPost, ...prevPosts]);
     } else {
-      console.error('Invalid post object received:', newPost);
+      console.error("Invalid post object received:", newPost);
       // Optionally, refetch all posts to ensure consistency
       window.location.reload(); // Simple solution to refresh the posts
     }
@@ -48,11 +50,13 @@ export default function PostPage() {
     .sort((a, b) => {
       if (sortBy === "newest") {
         return (
-          new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()
+          new Date(b.created_at || 0).getTime() -
+          new Date(a.created_at || 0).getTime()
         );
       } else if (sortBy === "oldest") {
         return (
-          new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime()
+          new Date(a.created_at || 0).getTime() -
+          new Date(b.created_at || 0).getTime()
         );
       } else if (sortBy === "author") {
         return (a.author || "").localeCompare(b.author || "");
@@ -63,6 +67,7 @@ export default function PostPage() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        setLoading(true);
         const res = await fetch(
           `${
             import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"
@@ -70,16 +75,18 @@ export default function PostPage() {
         );
         const data = await res.json();
         console.log("Fetched posts data:", data); // Debug log
-        
+
         // Ensure data is an array and filter out invalid posts
-        const validPosts = Array.isArray(data) 
-          ? data.filter(post => post && typeof post === 'object' && post.id)
+        const validPosts = Array.isArray(data)
+          ? data.filter((post) => post && typeof post === "object" && post.id)
           : [];
-          
+
         setPosts(validPosts);
       } catch (err) {
         console.error("Error fetching posts:", err);
         setPosts([]); // Set empty array on error
+      } finally {
+        setLoading(false); // ✅ stop loading
       }
     };
 
@@ -88,7 +95,7 @@ export default function PostPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
+      {loading && <LinearProgress />}
 
       <Box
         display="flex"
@@ -135,12 +142,18 @@ export default function PostPage() {
       {/* Posts Grid */}
       <main className="max-w-6xl mx-auto px-4 py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedPosts.length > 0 ? (
-            sortedPosts
-              .filter((post) => post && post.id) // Filter out undefined/null posts or posts without id
-              .map((post) => <PostCard key={post.id} post={post} />)
+          {loading ? (
+            <div className="text-center py-10">Loading posts...</div>
           ) : (
-            <div>No posts available</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {sortedPosts.length > 0 ? (
+                sortedPosts.map((post) => (
+                  <PostCard key={post.id} post={post} />
+                ))
+              ) : (
+                <div>No posts available</div>
+              )}
+            </div>
           )}
         </div>
       </main>
