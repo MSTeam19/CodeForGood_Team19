@@ -13,6 +13,7 @@ import {
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import React, { useState } from "react";
+import { useAuth } from "../../contexts/authContext";
 
 // Constants
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
@@ -38,12 +39,37 @@ export function CreatePostModal({
   onClose,
   onPostCreated,
 }: CreatePostModalProps) {
+  // Auth context
+  const { isAuthenticated, user } = useAuth();
+  
   // State
   const [description, setDescription] = useState("");
   const [author, setAuthor] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  // Auto-populate author if user is authenticated
+  React.useEffect(() => {
+    if (user?.name && !author) {
+      setAuthor(user.name);
+    }
+  }, [user, author]);
+
+  // Check authentication
+  if (!isAuthenticated) {
+    return (
+      <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
+        <DialogTitle>Authentication Required</DialogTitle>
+        <DialogContent>
+          Please log in to create posts.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
 
   // Validation
   const isFormValid = selectedFile && description.trim() && author.trim();
@@ -98,6 +124,9 @@ export function CreatePostModal({
   const createPost = async (postData: PostData): Promise<any> => {
     const token = localStorage.getItem('authToken');
     
+    console.log('Creating post with token:', token ? 'Token exists' : 'No token');
+    console.log('Post data:', postData);
+    
     const response = await fetch(`${API_BASE_URL}/posts/create`, {
       method: "POST",
       headers: {
@@ -107,7 +136,12 @@ export function CreatePostModal({
       body: JSON.stringify(postData),
     });
 
+    console.log('Response status:', response.status);
+    
     if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Response error:', errorData);
+      
       if (response.status === 401) {
         throw new Error("Authentication required. Please log in.");
       }
