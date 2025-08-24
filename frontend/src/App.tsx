@@ -12,6 +12,8 @@ import ChampionRegion from './pages/champion-region';
 import ChampionNFC from './pages/champion-nfc';
 import Dashboard from './pages/dashboard';
 import { ProtectedRoute } from './components/protectedRoute';
+import Chatbot from './components/chatbot/chatbot';
+import './App.css';
 
 function App() {
   const location = useLocation();
@@ -42,6 +44,8 @@ function App() {
           </Routes>
         </main>
         {!isNFCView && <Footer />}
+        <Chatbot />
+        
       </div>
     </AuthProvider>
   );

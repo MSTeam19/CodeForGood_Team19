@@ -1,0 +1,27 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node ingest.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@huggingface/inference": "^4.7.1",
+    "axios": "^1.11.0",
+    "@supabase/supabase-js": "^2.x.x",
+    "node-fetch": "^2.x.x",
+    "next": "^13.x.x",
+    "react": "^18.x.x"
+  },
+  "devDependencies": {
+    "@types/node": "^18.x.x",
+    "@types/react": "^18.x.x",
+    "typescript": "^4.x.x"
+  }
+}
+
+  
