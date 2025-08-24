@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
       goalCents,
       startDate,
       endDate,
-      isActive = true
+      status = "active"
     } = req.body;
 
     // Validate required fields
@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
         goal_cents: goalCents,
         start_date: startDate,
         end_date: endDate,
-        is_active: isActive,
+        status: status,
         created_at: new Date().toISOString()
       }])
       .select();
@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
       goalCents: campaign.goal_cents,
       startDate: campaign.start_date,
       endDate: campaign.end_date,
-      isActive: campaign.is_active,
+      status: campaign.status,
       createdAt: campaign.created_at
     };
 

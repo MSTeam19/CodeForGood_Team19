@@ -7,19 +7,18 @@ router.post('/', async (req, res) => {
   try {
     const {
       name,
+      region_id,
       country,
       goalCents,
       lat,
       lng,
-      description,
-      campaignId
     } = req.body;
 
     // Validate required fields
-    if (!name || !country || !goalCents) {
+    if (!name || !region_id || !country || !goalCents) {
       return res.status(400).json({
         error: 'Missing required fields',
-        required: ['name', 'country', 'goalCents']
+        required: ['name', 'region_id', 'country', 'goalCents']
       });
     }
 
@@ -45,13 +44,12 @@ router.post('/', async (req, res) => {
     const { data, error } = await supabase
       .from('regions')
       .insert([{
-        name,
-        country,
+        region_id: region_id,
+        name: name,
+        country: country,
+        lat: lat,
+        lng: lng,
         goal_cents: goalCents,
-        lat,
-        lng,
-        description,
-        campaign_id: campaignId || 'demo-campaign',
         created_at: new Date().toISOString()
       }])
       .select();
@@ -80,8 +78,6 @@ router.post('/', async (req, res) => {
       goalCents: region.goal_cents,
       lat: region.lat,
       lng: region.lng,
-      description: region.description,
-      campaignId: region.campaign_id,
       createdAt: region.created_at
     };
 

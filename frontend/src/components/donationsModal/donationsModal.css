@@ -14,7 +14,7 @@
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  max-width: 420px;
+  max-width: 600px;
   width: 100%;
   padding: 32px 24px;
   position: relative;
@@ -62,7 +62,6 @@
 .donations-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 
 .form-group {
@@ -80,7 +79,7 @@
 .form-group input,
 .form-group select,
 .form-group textarea {
-  padding: 10px 12px;
+  padding: 5px 6px;
   border: 1px solid #cfd8dc;
   border-radius: 6px;
   font-size: 1rem;
@@ -154,4 +153,14 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.form-row .form-group {
+  flex: 1;
 }
