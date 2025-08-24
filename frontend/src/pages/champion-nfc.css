@@ -1,11 +1,13 @@
 /* Champion NFC Profile Page */
 .champion-nfc-page {
   min-height: 100vh;
+  height: 100vh;
   background: linear-gradient(135deg, #e0f2fd 0%, #b2dfdb 50%, #FFFDE7 100%);
   padding: 20px;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-overflow-scrolling: touch;
   -webkit-tap-highlight-color: transparent;
+  overflow-y: auto;
 }
 
 .champion-nfc-container {

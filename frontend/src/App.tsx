@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/authContext';
 import Home from './pages/home';
 import Footer from './components/footer/footer';
@@ -14,10 +14,13 @@ import Dashboard from './pages/dashboard';
 import { ProtectedRoute } from './components/protectedRoute';
 
 function App() {
+  const location = useLocation();
+  const isNFCView = location.pathname.startsWith('/champion-nfc');
+
   return (
     <AuthProvider>
       <div className="app-root">
-        <Header />
+        {!isNFCView && <Header />}
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -38,7 +41,7 @@ function App() {
             />
           </Routes>
         </main>
-        <Footer />
+        {!isNFCView && <Footer />}
       </div>
     </AuthProvider>
   );
