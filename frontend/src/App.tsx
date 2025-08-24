@@ -44,8 +44,8 @@ function App() {
           </Routes>
         </main>
         {!isNFCView && <Footer />}
-        <Footer />
         <Chatbot />
+        
       </div>
     </AuthProvider>
   );
