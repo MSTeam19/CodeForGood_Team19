@@ -141,21 +141,17 @@ export default function PostPage() {
 
       {/* Posts Grid */}
       <main className="max-w-6xl mx-auto px-4 py-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {loading ? (
-            <div className="text-center py-10">Loading posts...</div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {sortedPosts.length > 0 ? (
-                sortedPosts.map((post) => (
-                  <PostCard key={post.id} post={post} />
-                ))
-              ) : (
-                <div>No posts available</div>
-              )}
-            </div>
-          )}
-        </div>
+        {loading ? (
+          <div className="text-center py-10">Loading posts...</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sortedPosts.length > 0 ? (
+              sortedPosts.map((post) => <PostCard key={post.id} post={post} />)
+            ) : (
+              <div>No posts available</div>
+            )}
+          </div>
+        )}
       </main>
 
       {/* Mobile Bottom Navigation */}
