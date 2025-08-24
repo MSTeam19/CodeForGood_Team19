@@ -1,50 +1,5 @@
 /* Root Container */
 
-/* Global overflow prevention - more aggressive */
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  overflow-x: hidden !important;
-  max-width: 100vw !important;
-  width: 100% !important;
-}
-
-/* Container width limits */
-.hero-section,
-.thermometer-section,
-.champion-spotlight,
-.impact-stories-section,
-.stats-section,
-.mission-section,
-.cta-section {
-  max-width: 100vw !important;
-  overflow-x: hidden !important;
-  width: 100% !important;
-}
-
-/* Ensure specific elements respect viewport */
-.hero-content,
-.thermometer-widget,
-.champion-card-spotlight,
-.stories-grid,
-.stats-grid,
-.mission-grid,
-.cta-content {
-  max-width: 100%;
-}
-
-/* Force immediate overflow hiding on page load */
-.home-root {
-  width: 100% !important;
-  max-width: 100vw !important;
-  overflow: hidden !important;
-}
-
-.home-root > section:last-child {
-  margin-bottom: 0;
-}
 
 /* Hero Section */
 .hero-section {
