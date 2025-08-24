@@ -102,6 +102,10 @@ export default function PostPage() {
         justifyContent="space-between"
         alignItems="center"
         className="max-w-6xl mx-auto px-4 py-8"
+        style={{
+          marginLeft: isMobile ? 0 : "auto",
+          marginRight: isMobile ? 0 : "auto",
+        }}
       >
         <FormControl size="small" sx={{ minWidth: 150 }}>
           <InputLabel id="sort-label">Sort By</InputLabel>
@@ -139,7 +143,13 @@ export default function PostPage() {
         )}
       </Box>
 
-      <main className="max-w-6xl mx-auto px-4 py-4">
+      <main
+        className="max-w-6xl mx-auto px-4 py-4"
+        style={{
+          marginLeft: isMobile ? 0 : "auto",
+          marginRight: isMobile ? 0 : "auto",
+        }}
+      >
         {loading ? (
           <div className="text-center py-10">Loading posts...</div>
         ) : (
