@@ -5,7 +5,8 @@ require('dotenv').config();
 const requiredEnvVars = [
   'GOOGLE_CLOUD_PROJECT_ID',
   'GOOGLE_CLOUD_BUCKET_NAME',
-  'GOOGLE_APPLICATION_CREDENTIALS'
+  'GOOGLE_CLOUD_CLIENT_EMAIL',
+  'GOOGLE_CLOUD_PRIVATE_KEY'
 ];
 
 for (const envVar of requiredEnvVars) {
@@ -14,10 +15,13 @@ for (const envVar of requiredEnvVars) {
   }
 }
 
-// Initialize Google Cloud Storage
+// Initialize Google Cloud Storage using environment variables
 const storage = new Storage({
   projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
-  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  credentials: {
+    client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
+    private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  },
 });
 
 const bucketName = process.env.GOOGLE_CLOUD_BUCKET_NAME;
