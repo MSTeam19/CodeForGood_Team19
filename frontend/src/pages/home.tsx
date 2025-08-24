@@ -4,7 +4,6 @@ import './home.css';
 function Home() {
   const [statsAnimated, setStatsAnimated] = useState(false);
   const [currentStat, setCurrentStat] = useState(0);
-  const [scrollY, setScrollY] = useState(0);
   const [showFloatingButton, setShowFloatingButton] = useState(false);
   const [currentChampion, setCurrentChampion] = useState(0);
   
@@ -112,7 +111,6 @@ function Home() {
   // Scroll tracking for animations and floating button
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
       setShowFloatingButton(window.scrollY > 800);
     };
     
@@ -234,7 +232,8 @@ function Home() {
               <div className="champion-avatar-large">
                 <img src={champions[currentChampion].photo} alt={champions[currentChampion].name} onError={(e) => {
                   e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling.style.display = 'flex';
+                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (fallback) fallback.style.display = 'flex';
                 }} />
                 <div className="avatar-placeholder" style={{display: 'none'}}>
                   {champions[currentChampion].avatar}
@@ -270,7 +269,8 @@ function Home() {
                 <div className="story-image">
                   <img src={story.photo} alt={story.name} onError={(e) => {
                     e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling.style.display = 'flex';
+                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'flex';
                   }} />
                   <div className="story-image-placeholder" style={{display: 'none'}}>
                     <div className="placeholder-avatar">{story.name.split(' ').map(n => n[0]).join('')}</div>

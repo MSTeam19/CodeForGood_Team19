@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import './champion-nfc.css';
 
 // Mock champion data for demo
@@ -32,9 +30,7 @@ const mockChampion = {
 };
 
 export default function ChampionNFC() {
-  const { token } = useParams();
-  const [champion, setChampion] = useState(mockChampion);
-  const [loading, setLoading] = useState(false);
+  const champion = mockChampion;
 
   const hkd = new Intl.NumberFormat('en-HK', {
     style: 'currency',
@@ -48,8 +44,6 @@ export default function ChampionNFC() {
     });
   };
 
-  const currentUrl = window.location.href;
-
   return (
     <div className="champion-nfc-page">
       <div className="champion-nfc-container">
@@ -57,7 +51,7 @@ export default function ChampionNFC() {
         {/* Verification Header */}
         <div className="verification-header">
           <div className="verification-badge">
-            <span className="verify-icon">✅</span>
+            <span className="verify-icon">✓</span>
             <span className="verify-text">Verified REACH Champion</span>
           </div>
           <div className="reach-logo">
@@ -77,7 +71,8 @@ export default function ChampionNFC() {
                 alt={champion.name}
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling!.style.display = 'flex';
+                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (fallback) fallback.style.display = 'flex';
                 }}
               />
               <div className="avatar-fallback" style={{ display: 'none' }}>

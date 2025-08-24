@@ -36,6 +36,18 @@
 
 .verify-icon {
   font-size: 1.1rem;
+  font-weight: 900;
+  color: white;
+  background: white;
+  color: #2E7D32;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .reach-logo {
