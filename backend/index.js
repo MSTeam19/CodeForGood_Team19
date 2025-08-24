@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -128,9 +129,30 @@ async function realBotHandler(request, response) {
   }
 }
 
-app.post('/api/bot', realBotHandler);
-app.get('/campaigns/active', (req, res) => res.status(200).json([]));
+async function getActiveCampaigns(request, response) {
+  console.log("\n--- New /campaigns/active request ---");
+  try {
+    const { data, error } = await supabase
+      .from('campaigns')
+      .select('id, name, description')
+      .eq('status', 'active');
 
+    if (error) {
+      console.error("❌ SUPABASE CAMPAIGN QUERY ERROR:", error);
+      throw new Error('Failed to fetch campaigns from the database.');
+    }
+
+    console.log(`✅ SUCCESS: Found ${data.length} active campaigns.`);
+    return response.status(200).json(data);
+  } catch (error) {
+    console.error("--- ❌ An error occurred while fetching campaigns ---");
+    console.error(error.message);
+    return response.status(500).json({ error: error.message });
+  }
+}
+
+app.post('/api/bot', realBotHandler);
+app.get('/campaigns/active', getActiveCampaigns);
 app.listen(PORT, () => {
   console.log(`✅ Server is running successfully on http://localhost:${PORT}`);
 });
