@@ -67,57 +67,61 @@ export function DonationsModal({ open, onClose, onSubmit }: DonationsModalProps)
             </div>
           ) : (
             <form className="donations-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="regionId">Region</label>
-                <select
-                  name="regionId"
-                  id="regionId"
-                  value={form.regionId}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="" disabled>Select a region</option>
-                  {regions.map((region: any) => (
-                    <option key={region.regionId} value={region.regionId}>{region.name}</option>
-                  ))}
-                </select>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="regionId">Region</label>
+                  <select
+                    name="regionId"
+                    id="regionId"
+                    value={form.regionId}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="" disabled>Select a region</option>
+                    {regions.map((region: any) => (
+                      <option key={region.regionId} value={region.regionId}>{region.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="campaignId">Campaign</label>
+                  <select
+                    name="campaignId"
+                    id="campaignId"
+                    value={form.campaignId}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="" disabled>Select a campaign</option>
+                    {campaigns.map((campaign: any) => (
+                      <option key={campaign.id} value={campaign.id}>{campaign.name}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="campaignId">Campaign</label>
-                <select
-                  name="campaignId"
-                  id="campaignId"
-                  value={form.campaignId}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="" disabled>Select a campaign</option>
-                  {campaigns.map((campaign: any) => (
-                    <option key={campaign.id} value={campaign.id}>{campaign.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="donorName">Donor Name</label>
-                <input
-                  type="text"
-                  name="donorName"
-                  id="donorName"
-                  value={form.donorName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="donorEmail">Donor Email</label>
-                <input
-                  type="email"
-                  name="donorEmail"
-                  id="donorEmail"
-                  value={form.donorEmail}
-                  onChange={handleChange}
-                  required
-                />
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="donorName">Donor Name</label>
+                  <input
+                    type="text"
+                    name="donorName"
+                    id="donorName"
+                    value={form.donorName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="donorEmail">Donor Email</label>
+                  <input
+                    type="email"
+                    name="donorEmail"
+                    id="donorEmail"
+                    value={form.donorEmail}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
               <div className="form-group">
                 <label htmlFor="amount">Amount (HKD)</label>
@@ -138,10 +142,10 @@ export function DonationsModal({ open, onClose, onSubmit }: DonationsModalProps)
                   id="message"
                   value={form.message}
                   onChange={handleChange}
-                  rows={3}
+                  rows={2}
                 />
               </div>
-              <div style={{ display: "flex", gap: "12px", marginTop: "16px", justifyContent: "flex-end" }}>
+              <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
                 <button
                   type="button"
                   className="cancel-button"
