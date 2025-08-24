@@ -8,8 +8,11 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { MobileBottomNav } from "../components/navigation/mobileBottomNav";
 import { CreatePostModal } from "../components/stories/createPostModal";
 import { PostCard } from "../components/stories/postCard";
 import { useAuth } from "../contexts/authContext";
@@ -18,12 +21,16 @@ import "./postPage.css";
 
 export default function PostPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
   const { isAuthenticated } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [sortBy, setSortBy] = useState("newest");
   const [posts, setPosts] = useState<any[]>([]);
-  // const [loading, setLoading] = useState(true);
+  
+  const handleCreatePost = () => {
+    setIsCreateModalOpen(true);
+  };
 
   const handlePostCreated = (newPost: any) => {
     // Validate the new post has required fields before adding to state
@@ -113,11 +120,11 @@ export default function PostPage() {
           Personal Stories
         </h1>
 
-        {isAuthenticated && (
+        {isAuthenticated && !isMobile && (
           <Button
-            onClick={() => setIsCreateModalOpen(true)}
-            // variant="contained"
-            style={{ color: "#00796b" }}
+            onClick={handleCreatePost}
+            variant="outlined"
+            style={{ color: "#00796b", borderColor: "#00796b" }}
             startIcon={<AddIcon />}
           >
             Create Post
@@ -137,6 +144,9 @@ export default function PostPage() {
           )}
         </div>
       </main>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav onCreatePost={handleCreatePost} />
 
       {/* Modals */}
       <CreatePostModal
