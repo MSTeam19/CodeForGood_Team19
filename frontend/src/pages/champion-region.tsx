@@ -152,10 +152,10 @@ const ChampionRegionPage: React.FC = () => {
 
   return (
     <div className="champion-region-page">
+      <Link to="/needs-map" className="back-link">
+        ← Back to Map
+      </Link>
       <div className="champion-header">
-        <Link to="/needs-map" className="back-link">
-          ← Back to Map
-        </Link>
         <div className="header-content">
           <h1>Champions in {region?.name || 'This Region'}</h1>
           <p className="region-info">{region?.country} • {champions.length} Champion{champions.length !== 1 ? 's' : ''}</p>
@@ -179,7 +179,18 @@ const ChampionRegionPage: React.FC = () => {
               <div key={champion.championId} className={`champion-card ${champion.isLeadChampion ? 'lead-champion' : ''}`}>
                 <div className="champion-header-card">
                   <div className="champion-avatar">
-                    {champion.name.split(' ').map(n => n[0]).join('')}
+                    <img 
+                      src={`/champion-${champion.name.split(' ')[0].toLowerCase()}.jpg`} 
+                      alt={champion.name}
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                        if (fallback) fallback.style.display = 'flex';
+                      }}
+                    />
+                    <div className="avatar-fallback" style={{display: 'none'}}>
+                      {champion.name.split(' ').map(n => n[0]).join('')}
+                    </div>
                   </div>
                   <div className="champion-info">
                     <h3 className="champion-name">
