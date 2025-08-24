@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/authContext';
 import Home from './pages/home';
 import Footer from './components/footer/footer';
@@ -9,16 +9,20 @@ import PostPage from './pages/postPage';
 import AdminPage from './pages/adminPage';
 import Champion from './pages/champion';
 import ChampionRegion from './pages/champion-region';
+import ChampionNFC from './pages/champion-nfc';
 import Dashboard from './pages/dashboard';
 import { ProtectedRoute } from './components/protectedRoute';
 import Chatbot from './components/chatbot/chatbot';
 import './App.css';
 
 function App() {
+  const location = useLocation();
+  const isNFCView = location.pathname.startsWith('/champion-nfc');
+
   return (
     <AuthProvider>
       <div className="app-root">
-        <Header />
+        {!isNFCView && <Header />}
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -28,6 +32,7 @@ function App() {
             <Route path="/stories" element={<PostPage />} />
             <Route path="/champion" element={<Champion />} />
             <Route path="/region/:regionId/champions" element={<ChampionRegion />} />
+            <Route path="/champion-nfc/:token" element={<ChampionNFC />} />
             <Route
               path="/admin"
               element={
@@ -38,6 +43,7 @@ function App() {
             />
           </Routes>
         </main>
+        {!isNFCView && <Footer />}
         <Footer />
         <Chatbot />
       </div>
