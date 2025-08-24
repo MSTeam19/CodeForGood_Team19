@@ -9,6 +9,7 @@ import PostPage from './pages/postPage';
 import AdminPage from './pages/adminPage';
 import Champion from './pages/champion';
 import ChampionRegion from './pages/champion-region';
+import ChampionNFC from './pages/champion-nfc';
 import Dashboard from './pages/dashboard';
 import { ProtectedRoute } from './components/protectedRoute';
 
@@ -26,6 +27,7 @@ function App() {
             <Route path="/stories" element={<PostPage />} />
             <Route path="/champion" element={<Champion />} />
             <Route path="/region/:regionId/champions" element={<ChampionRegion />} />
+            <Route path="/champion-nfc/:token" element={<ChampionNFC />} />
             <Route
               path="/admin"
               element={
