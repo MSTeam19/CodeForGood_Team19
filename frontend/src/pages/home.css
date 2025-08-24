@@ -3,6 +3,8 @@
 /* Global overflow prevention - more aggressive */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html,
@@ -10,6 +12,8 @@ body {
   overflow-x: hidden !important;
   max-width: 100vw !important;
   width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* Container width limits */
@@ -41,6 +45,8 @@ body {
   width: 100% !important;
   max-width: 100vw !important;
   overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .home-root > section:last-child {
@@ -628,9 +634,9 @@ div.stats-section div.stat-card div.stat-label-large {
 /* Floating Donate Button */
 .floating-donate-btn {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index: 1000;
+  bottom: 20px;
+  right: 100px;
+  z-index: 999;
   opacity: 0;
   transform: translateY(20px) scale(0.8);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);

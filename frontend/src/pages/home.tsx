@@ -392,11 +392,7 @@ function Home() {
       </section>
 
       {/* Impact Statistics */}
-      <section
-        id="stats-section"
-        ref={statsRef}
-        className="stats-section scroll-animate"
-      >
+      <section className="stats-section">
         <div className="stats-container">
           <h2 className="section-title">Our Impact in Numbers</h2>
           <div className="stats-grid">
@@ -412,11 +408,7 @@ function Home() {
       </section>
 
       {/* Mission Cards */}
-      <section
-        id="mission-section"
-        ref={missionRef}
-        className="mission-section scroll-animate"
-      >
+      <section ref={missionRef} className="mission-section scroll-animate">
         <div className="mission-container">
           <h2 className="section-title">Our Mission</h2>
           <div className="mission-grid">
