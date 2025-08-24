@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, type FormEvent } from 'react';
 import './chatbot.css';
 import type { Campaign } from '../data/staticKnowledge'; 
 import { staticKnowledgeBase } from '../data/staticKnowledge';
+import BotMessage from './botMessage';
 
 interface Message {
   id: number;
@@ -222,13 +223,12 @@ const ChatWindow = ({ onClose }: { onClose: () => void }) => {
         <h3>REACH Helper</h3>
         <button onClick={onClose} className="close-btn">&times;</button>
       </div>
+
       <div className="chat-messages">
         {messages.map((msg) => (
-          <div 
-            key={msg.id} 
-            className={`message ${msg.sender}`}
-            dangerouslySetInnerHTML={{ __html: msg.text }} 
-          />
+        <div key={msg.id} className={`message ${msg.sender}`}>
+            {msg.sender === 'bot' ? <BotMessage text={msg.text} /> : msg.text}
+        </div>
         ))}
         {!showCustomInput && renderChatButtons()}
         {status === 'Thinking...' && (

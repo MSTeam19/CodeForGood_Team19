@@ -179,6 +179,21 @@
   cursor: pointer;
 }
 
+.message.bot p {
+  margin: 0;
+}
+
+.bot-list {
+  padding-left: 20px;
+  margin-top: 8px;
+  margin-bottom: 0;
+  text-align: left;
+}
+
+.bot-list li {
+  margin-bottom: 5px;
+}
+
 .chat-input-form button:hover:not(:disabled) { background: #004d40; }
 .chat-input-form button:disabled { background: #aaa; cursor: not-allowed; }
 
