@@ -7,6 +7,9 @@ import Leaderboard from './pages/leaderboard';
 import NeedsMap from './pages/needs-map';
 import PostPage from './pages/postPage';
 import AdminPage from './pages/adminPage';
+import Champion from './pages/champion';
+import ChampionRegion from './pages/champion-region';
+import Dashboard from './pages/dashboard';
 import { ProtectedRoute } from './components/protectedRoute';
 
 function App() {
@@ -19,7 +22,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/needs-map" element={<NeedsMap />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/stories" element={<PostPage />} />
+            <Route path="/champion" element={<Champion />} />
+            <Route path="/region/:regionId/champions" element={<ChampionRegion />} />
             <Route
               path="/admin"
               element={

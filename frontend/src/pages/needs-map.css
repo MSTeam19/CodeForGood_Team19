@@ -42,6 +42,12 @@
   gap: 1.5rem;
 }
 
+.view-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .country-filter {
   display: flex;
   gap: 0.25rem;
@@ -294,6 +300,56 @@
   color: #2c3e50;
 }
 
+.detail-champions {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border-left: 4px solid #FFD700;
+}
+
+.champions-header {
+  margin-bottom: 0.75rem;
+}
+
+.champions-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lead-champion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.champion-label {
+  font-size: 0.875rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.champion-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.more-champions {
+  margin-top: 0.5rem;
+}
+
+.more-champions-text {
+  font-size: 0.8rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
 .detail-actions {
   display: flex;
   flex-direction: column;
@@ -337,6 +393,63 @@
   box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
 }
 
+.btn-champion {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.btn-champion:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+.btn-champions {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color: #333;
+  font-weight: 700;
+  border: 2px solid transparent;
+}
+
+.btn-champions:hover {
+  background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+  color: #333;
+  text-decoration: none;
+}
+
+.dashboard-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dashboard-btn:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  text-decoration: none;
+  color: white;
+}
+
 .map-placeholder {
   display: flex;
   align-items: center;
@@ -364,6 +477,80 @@
   color: #6c757d;
   margin-bottom: 1.5rem;
   line-height: 1.6;
+}
+
+/* Quest Level Display Styles */
+.detail-quest {
+  margin-bottom: 1.5rem;
+}
+
+.quest-level-display {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 2px solid #e9ecef;
+}
+
+.quest-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.quest-emoji {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  border: 2px solid #e9ecef;
+}
+
+.quest-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.quest-name {
+  font-size: 1rem;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.quest-description {
+  font-size: 0.875rem;
+  color: #6c757d;
+  line-height: 1.2;
+}
+
+.quest-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quest-progress-bar {
+  height: 6px;
+  background: #e9ecef;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.quest-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.quest-progress-text {
+  font-size: 0.75rem;
+  color: #6c757d;
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
@@ -428,5 +615,41 @@
 
   .detail-content {
     padding: 1rem;
+  }
+}
+
+/* Map Pulsing Animations */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-champion {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 15px rgba(255, 215, 0, 0);
+  }
+}
+
+@keyframes pulse-quest {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
   }
 }
