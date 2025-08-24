@@ -60,10 +60,11 @@ Switch to your branch before starting to code:
 <p align="center">
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript" width="40"/></a>&nbsp;&nbsp;
 <a href="https://expressjs.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" alt="ExpressJS" width="100"/></a>&nbsp;&nbsp;
+<a href="https://expressjs.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/Hf-logo-with-title.svg" alt="Hugging Face" width="120"/></a>&nbsp;&nbsp;
 <a href="https://cloud.google.com/storage/"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" alt="Google Cloud Storage" width="200"/></a>&nbsp;&nbsp;
 <a href="https://supabase.com/"><img src="https://www.vectorlogo.zone/logos/supabase/supabase-icon.svg" alt="Supabase" width="40" /></a>&nbsp;&nbsp;
 <br>
-<i>JavaScript · Express · Google Cloud Storage · Supabase</i>
+<i>JavaScript · Express · Hugging Face · Google Cloud Storage · Supabase</i>
 </p>
 <br>
 
