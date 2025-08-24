@@ -45,16 +45,54 @@ export function CampaignsModal({ open, onClose, onSubmit }: CampaignsModalProps)
         </div>
         <div className="donations-modal-body">
           <form className="donations-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="name">Campaign Name</label>
-              <input
-                type="text"
-                name="name"
-                id="name"
-                value={form.name}
-                onChange={handleChange}
-                required
-              />
+            <div className="form-row">
+                <div className="form-group">
+                <label htmlFor="name">Campaign Name</label>
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                />
+                </div>
+                <div className="form-group">
+                <label htmlFor="amount">Goal ($)</label>
+                <input
+                    type="number"
+                    name="amount"
+                    id="amount"
+                    value={form.amount}
+                    onChange={handleChange}
+                    required
+                    min={1}
+                />
+                </div>
+            </div>
+            <div className="form-row">
+                <div className="form-group">
+                <label htmlFor="startDate">Start Date</label>
+                <input
+                    type="date"
+                    name="startDate"
+                    id="startDate"
+                    value={form.startDate}
+                    onChange={handleChange}
+                    required
+                />
+                </div>
+                <div className="form-group">
+                <label htmlFor="endDate">End Date</label>
+                <input
+                    type="date"
+                    name="endDate"
+                    id="endDate"
+                    value={form.endDate}
+                    onChange={handleChange}
+                    required
+                />
+                </div>
             </div>
             <div className="form-group">
               <label htmlFor="description">Description</label>
@@ -67,41 +105,7 @@ export function CampaignsModal({ open, onClose, onSubmit }: CampaignsModalProps)
                 required
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="amount">Goal ($)</label>
-              <input
-                type="number"
-                name="amount"
-                id="amount"
-                value={form.amount}
-                onChange={handleChange}
-                required
-                min={1}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="startDate">Start Date</label>
-              <input
-                type="date"
-                name="startDate"
-                id="startDate"
-                value={form.startDate}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="endDate">End Date</label>
-              <input
-                type="date"
-                name="endDate"
-                id="endDate"
-                value={form.endDate}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div style={{ display: "flex", gap: "12px", marginTop: "16px", justifyContent: "flex-end" }}>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
               <button
                 type="button"
                 className="cancel-button"

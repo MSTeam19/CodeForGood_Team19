@@ -42,77 +42,83 @@ export function RegionsModal({ open, onClose, onSubmit }: RegionsModalProps) {
         </div>
         <div className="donations-modal-body">
             <form className="donations-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="name">Region Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  required
-                />
+              <div className="form-row">
+                <div className="form-group">
+                    <label htmlFor="name">School Name</label>
+                    <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="region_id">Region ID</label>
+                    <input
+                    type="text"
+                    name="region_id"
+                    id="region_id"
+                    value={form.region_id}
+                    onChange={handleChange}
+                    required
+                    />
+                </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="region_id">Region ID</label>
-                <input
-                  type="text"
-                  name="region_id"
-                  id="region_id"
-                  value={form.region_id}
-                  onChange={handleChange}
-                  required
-                />
+              <div className="form-row">
+                <div className="form-group">
+                    <label htmlFor="country">Country Code</label>
+                    <input
+                    type="text"
+                    name="country"
+                    id="country"
+                    value={form.country}
+                    onChange={handleChange}
+                    required
+                    maxLength={3}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="amount">Goal ($)</label>
+                    <input
+                    type="number"
+                    name="amount"
+                    id="amount"
+                    value={form.amount}
+                    onChange={handleChange}
+                    required
+                    min={1}
+                    />
+                </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="country">Country Code</label>
-                <input
-                  type="text"
-                  name="country"
-                  id="country"
-                  value={form.country}
-                  onChange={handleChange}
-                  required
-                  maxLength={3}
-                />
+              <div className="form-row">
+                <div className="form-group">
+                    <label htmlFor="lat">Latitude</label>
+                    <input
+                    type="number"
+                    name="lat"
+                    id="lat"
+                    value={form.lat}
+                    onChange={handleChange}
+                    required
+                    step="any"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="lng">Longitude</label>
+                    <input
+                    type="number"
+                    name="lng"
+                    id="lng"
+                    value={form.lng}
+                    onChange={handleChange}
+                    required
+                    step="any"
+                    />
+                </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="amount">Goal ($)</label>
-                <input
-                  type="number"
-                  name="amount"
-                  id="amount"
-                  value={form.amount}
-                  onChange={handleChange}
-                  required
-                  min={1}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="lat">Latitude</label>
-                <input
-                  type="number"
-                  name="lat"
-                  id="lat"
-                  value={form.lat}
-                  onChange={handleChange}
-                  required
-                  step="any"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="lng">Longitude</label>
-                <input
-                  type="number"
-                  name="lng"
-                  id="lng"
-                  value={form.lng}
-                  onChange={handleChange}
-                  required
-                  step="any"
-                />
-              </div>
-              <div style={{ display: "flex", gap: "12px", marginTop: "16px", justifyContent: "flex-end" }}>
+              <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
                 <button
                   type="button"
                   className="cancel-button"

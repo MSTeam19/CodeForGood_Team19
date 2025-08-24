@@ -101,7 +101,14 @@ function AdminPage() {
         `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"}/donations/${deleteId}`,
         { method: "DELETE" }
       );
-      if (!res.ok) throw new Error("Failed to delete donation");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(
+          errorData.details
+            ? `${errorData.error}: ${errorData.details}`
+            : errorData.error || "Failed to delete donation"
+        );
+      }
       setDonations((prev) => prev.filter((donation) => donation.id !== deleteId));
       setSnackbarMessage("Donation deleted successfully!");
       setSnackbarSeverity("success");
@@ -125,7 +132,14 @@ function AdminPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Failed to add donation");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(
+          errorData.details
+            ? `${errorData.error}: ${errorData.details}`
+            : errorData.error || "Failed to add donation"
+        );
+      }
       setLoading(true);
       await res.json();
       fetchDonations();
@@ -149,7 +163,14 @@ function AdminPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Failed to add campaign");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(
+          errorData.details
+            ? `${errorData.error}: ${errorData.details}`
+            : errorData.error || "Failed to add campaign"
+        );
+      }
       setLoading(true);
       await res.json();
       fetchDonations();
@@ -173,7 +194,14 @@ function AdminPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Failed to add region");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(
+          errorData.details
+            ? `${errorData.error}: ${errorData.details}`
+            : errorData.error || "Failed to add region"
+        );
+      }
       setLoading(true);
       await res.json();
       fetchDonations();
