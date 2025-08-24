@@ -86,7 +86,7 @@ export default function PostPage() {
         console.error("Error fetching posts:", err);
         setPosts([]); // Set empty array on error
       } finally {
-        setLoading(false); // ✅ stop loading
+        setLoading(false);
       }
     };
 
@@ -139,7 +139,6 @@ export default function PostPage() {
         )}
       </Box>
 
-      {/* Posts Grid */}
       <main className="max-w-6xl mx-auto px-4 py-4">
         {loading ? (
           <div className="text-center py-10">Loading posts...</div>
