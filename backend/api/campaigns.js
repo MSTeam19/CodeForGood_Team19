@@ -263,4 +263,32 @@ router.get('', async (req, res) => {
   }
 });
 
+// to select info req for chatbot
+router.get('/active', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('campaigns')
+      .select('id, name, description, status')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching active campaigns:', error);
+      return res.status(500).json({
+        error: 'Failed to fetch active campaigns',
+        details: error.message
+      });
+    }
+
+    res.json(data);
+
+  } catch (error) {
+    console.error('Active campaigns endpoint error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: error.message
+    });
+  }
+});
+
 module.exports = router;

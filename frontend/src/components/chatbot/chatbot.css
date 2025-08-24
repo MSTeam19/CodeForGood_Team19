@@ -172,6 +172,13 @@
   transition: background-color 0.2s;
 }
 
+.chatbot-anchor-link {
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .chat-input-form button:hover:not(:disabled) { background: #004d40; }
 .chat-input-form button:disabled { background: #aaa; cursor: not-allowed; }
 

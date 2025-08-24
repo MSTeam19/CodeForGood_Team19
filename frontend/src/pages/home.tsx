@@ -259,7 +259,7 @@ function Home() {
       </section>
 
       {/* Impact Stories */}
-      <section className="impact-stories-section">
+      <section id="impact-stories-section" className="impact-stories-section">
         <div className="impact-stories-container">
           <h2 className="section-title">Stories of Change</h2>
           <p className="section-subtitle">Meet the students whose lives have been transformed through REACH programs</p>
@@ -302,7 +302,7 @@ function Home() {
       </section>
 
       {/* Impact Statistics */}
-      <section ref={statsRef} className="stats-section scroll-animate">
+      <section id="stats-section" ref={statsRef} className="stats-section scroll-animate">
         <div className="stats-container">
           <h2 className="section-title">Our Impact in Numbers</h2>
           <div className="stats-grid">
@@ -322,7 +322,7 @@ function Home() {
       </section>
 
       {/* Mission Cards */}
-      <section ref={missionRef} className="mission-section scroll-animate">
+      <section id="mission-section" ref={missionRef} className="mission-section scroll-animate">
         <div className="mission-container">
           <h2 className="section-title">Our Mission</h2>
           <div className="mission-grid">
