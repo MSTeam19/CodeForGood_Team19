@@ -78,6 +78,19 @@
   gap: 10px;
 }
 
+.donation-link {
+  color: #0066cc; /* or any blue shade you prefer */
+  text-decoration: underline;
+}
+
+.donation-link:hover {
+  color: #0052a3; /* darker blue on hover */
+  text-decoration: underline;
+}
+
+.donation-link:visited {
+  color: #800080; /* purple for visited links */
+}
 .message {
   padding: 10px 15px;
   border-radius: 20px;
