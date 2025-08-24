@@ -112,34 +112,36 @@ export function AuthModal({ isOpen, onClose, initialMode }: AuthModalProps) {
             <form onSubmit={handleSubmit} className="auth-form">
               {!isLogin && (
                 <>
-                  <div className="form-group">
-                    <label htmlFor="name">Full Name</label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      disabled={isLoading}
-                      placeholder="Enter your full name"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="roles">Role</label>
-                    <select
-                      id="roles"
-                      name="roles"
-                      value={formData.roles}
-                      onChange={handleChange}
-                      required
-                      disabled={isLoading}
-                    >
-                      <option value="" disabled>Select your role</option>
-                      <option value="Staff">Staff</option>
-                      <option value="Parent">Parent</option>
-                      <option value="Student">Student</option>
-                    </select>
+                  <div className='form-row'>
+                    <div className="form-group">
+                      <label htmlFor="name">Full Name</label>
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        disabled={isLoading}
+                        placeholder="Enter your full name"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="roles">Role</label>
+                      <select
+                        id="roles"
+                        name="roles"
+                        value={formData.roles}
+                        onChange={handleChange}
+                        required
+                        disabled={isLoading}
+                      >
+                        <option value="" disabled>Select your role</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Parent">Parent</option>
+                        <option value="Student">Student</option>
+                      </select>
+                    </div>
                   </div>
                 </>
               )}
@@ -157,36 +159,38 @@ export function AuthModal({ isOpen, onClose, initialMode }: AuthModalProps) {
                   placeholder="Enter your email"
                 />
               </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  disabled={isLoading}
-                  placeholder="Enter your password"
-                />
-              </div>
-
-              {!isLogin && (
+              
+              <div className='form-row'>
                 <div className="form-group">
-                  <label htmlFor="confirmPassword">Confirm Password</label>
+                  <label htmlFor="password">Password</label>
                   <input
-                    id="confirmPassword"
-                    name="confirmPassword"
+                    id="password"
+                    name="password"
                     type="password"
-                    value={formData.confirmPassword}
+                    value={formData.password}
                     onChange={handleChange}
                     required
                     disabled={isLoading}
-                    placeholder="Confirm your password"
+                    placeholder="Enter your password"
                   />
                 </div>
-              )}
+
+                {!isLogin && (
+                  <div className="form-group">
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type="password"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      required
+                      disabled={isLoading}
+                      placeholder="Confirm your password"
+                    />
+                  </div>
+                )}
+              </div>
 
               <button 
                 type="submit" 
