@@ -191,8 +191,8 @@ function Home() {
           <div className="hero-stats">
             <div className="floating-stat">
               <span className="stat-icon">{impactStats[currentStat].icon}</span>
-              <span className="stat-number">{impactStats[currentStat].number}</span>
-              <span className="stat-label">{impactStats[currentStat].label}</span>
+              <span className="stat-number hero-stat-number" style={{color: '#FFFFFF', textShadow: '2px 2px 4px rgba(0,0,0,0.8)', fontWeight: 'bold'}}>{impactStats[currentStat].number}</span>
+              <span className="stat-label" style={{color: '#FFFFFF', textShadow: '2px 2px 4px rgba(0,0,0,0.8)', fontWeight: 'bold'}}>{impactStats[currentStat].label}</span>
             </div>
           </div>
         </div>
@@ -302,15 +302,14 @@ function Home() {
       </section>
 
       {/* Impact Statistics */}
-      <section ref={statsRef} className="stats-section scroll-animate">
+      <section className="stats-section">
         <div className="stats-container">
           <h2 className="section-title">Our Impact in Numbers</h2>
           <div className="stats-grid">
             {impactStats.map((stat, index) => (
               <div 
                 key={index} 
-                className={`stat-card ${statsAnimated ? 'animate' : ''}`}
-                style={{ animationDelay: `${index * 0.2}s` }}
+                className="stat-card"
               >
                 <div className="stat-icon-large">{stat.icon}</div>
                 <div className="stat-number-large">{stat.number}</div>

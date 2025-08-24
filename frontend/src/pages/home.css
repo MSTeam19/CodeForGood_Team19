@@ -5,7 +5,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden !important;
   max-width: 100vw !important;
   width: 100% !important;
@@ -50,10 +51,12 @@ html, body {
 .hero-section {
   position: relative;
   min-height: 100vh;
-  background: 
-    linear-gradient(135deg, rgba(0, 121, 107, 0.75) 0%, rgba(0, 105, 92, 0.85) 100%), 
-    url('/abc-pathways.jpg'),
-    linear-gradient(135deg, #00796b 0%, #00695c 100%);
+  background: linear-gradient(
+      135deg,
+      rgba(0, 121, 107, 0.75) 0%,
+      rgba(0, 105, 92, 0.85) 100%
+    ),
+    url('/abc-pathways.jpg'), linear-gradient(135deg, #00796b 0%, #00695c 100%);
   background-size: cover, cover, cover;
   background-position: center, center, center;
   background-attachment: fixed, fixed, fixed;
@@ -72,8 +75,11 @@ html, body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    radial-gradient(ellipse at center, rgba(0, 121, 107, 0.3) 0%, rgba(0, 105, 92, 0.6) 100%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 121, 107, 0.3) 0%,
+    rgba(0, 105, 92, 0.6) 100%
+  );
   z-index: 1;
 }
 
@@ -85,11 +91,18 @@ html, body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.3), transparent),
+  background: radial-gradient(
+      2px 2px at 20px 30px,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    ),
     radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.2), transparent),
     radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.4), transparent),
-    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.3), transparent);
+    radial-gradient(
+      1px 1px at 130px 80px,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
   background-repeat: repeat;
   background-size: 150px 150px;
   animation: sparkle 20s linear infinite;
@@ -153,7 +166,8 @@ html, body {
   animation: fadeInUp 1s ease-out 0.8s both;
 }
 
-.hero-btn-primary, .hero-btn-secondary {
+.hero-btn-primary,
+.hero-btn-secondary {
   padding: 16px 32px;
   border-radius: 50px;
   font-weight: 600;
@@ -219,14 +233,55 @@ html, body {
   font-size: 2rem;
   font-weight: 800;
   display: block;
-  color: #b2dfdb;
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.floating-stat .stat-number {
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-section .floating-stat .stat-number {
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.floating-stat span.stat-number {
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-stat-number {
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+span.hero-stat-number {
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.floating-stat .stat-label {
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-section .floating-stat .stat-label {
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+span.stat-label {
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .stat-label {
   font-size: 0.9rem;
   color: white !important;
   font-weight: 600;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Wave Effect */
@@ -243,27 +298,30 @@ html, body {
 
 /* Stats Section */
 .stats-section {
-  padding: 100px 40px;
-  background: #FFFDE7;
+  padding: 80px 20px 190px 20px;
+  background: #fffde7;
   text-align: center;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .stats-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  width: 100%;
   box-sizing: border-box;
 }
 
-.section-title {
+.stats-section .section-title {
   font-size: 2.5rem;
   font-weight: 700;
   color: #00796b;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   position: relative;
 }
 
-.section-title::after {
+.stats-section .section-title::after {
   content: '';
   position: absolute;
   bottom: -10px;
@@ -276,29 +334,29 @@ html, body {
 }
 
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 15px;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .stat-card {
   background: white;
-  padding: 40px 20px;
+  padding: 30px 15px;
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(0, 121, 107, 0.1);
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(30px);
   text-align: center;
-  min-height: 200px;
+  min-height: 180px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 250px;
+  max-width: 250px;
+  min-width: 220px;
+  flex-shrink: 0;
   box-sizing: border-box;
 }
 
@@ -537,7 +595,8 @@ div.stats-section div.stat-card div.stat-label-large {
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -546,7 +605,8 @@ div.stats-section div.stat-card div.stat-label-large {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -612,16 +672,22 @@ div.stats-section div.stat-card div.stat-label-large {
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 8px 32px rgba(0, 121, 107, 0.4);
   }
   50% {
-    box-shadow: 0 8px 40px rgba(0, 121, 107, 0.6), 0 0 20px rgba(0, 121, 107, 0.3);
+    box-shadow: 0 8px 40px rgba(0, 121, 107, 0.6),
+      0 0 20px rgba(0, 121, 107, 0.3);
   }
 }
 
 @keyframes bounce-icon {
-  0%, 20%, 50%, 80%, 100% {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
     transform: translateY(0);
   }
   40% {
@@ -647,7 +713,7 @@ div.stats-section div.stat-card div.stat-label-large {
 /* Donation Thermometer */
 .thermometer-section {
   padding: 100px 40px;
-  background: linear-gradient(135deg, #FFFDE7 0%, #f8f9fa 100%);
+  background: linear-gradient(135deg, #fffde7 0%, #f8f9fa 100%);
   text-align: center;
   animation: fadeInUp 0.8s ease-out 0.3s both;
 }
@@ -761,24 +827,40 @@ div.stats-section div.stat-card div.stat-label-large {
 }
 
 @keyframes liquid-flow {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(2px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2px);
+  }
 }
 
 @keyframes pulse-bulb {
-  0%, 100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.05); }
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.05);
+  }
 }
 
 @keyframes count-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Champion Spotlight */
 .champion-spotlight {
   padding: 100px 40px;
-  background: linear-gradient(135deg, #e0f2fd 0%, #b2dfdb 50%, #FFFDE7 100%);
+  background: linear-gradient(135deg, #e0f2fd 0%, #b2dfdb 50%, #fffde7 100%);
   animation: fadeInUp 0.8s ease-out 0.6s both;
 }
 
@@ -898,7 +980,8 @@ div.stats-section div.stat-card div.stat-label-large {
   align-items: center;
 }
 
-.join-champions-btn, .view-all-btn {
+.join-champions-btn,
+.view-all-btn {
   padding: 16px 40px;
   border-radius: 35px;
   font-weight: 600;
@@ -936,8 +1019,13 @@ div.stats-section div.stat-card div.stat-label-large {
 }
 
 @keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* Enhanced Hover Effects */
@@ -949,8 +1037,8 @@ div.stats-section div.stat-card div.stat-label-large {
   transform: translateY(-12px) scale(1.02);
 }
 
-
-.hero-btn-primary, .hero-btn-secondary {
+.hero-btn-primary,
+.hero-btn-secondary {
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -1163,12 +1251,20 @@ div.stats-section div.stat-card div.stat-label-large {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(0, 121, 107, 0.8) 0%, rgba(2, 136, 209, 0.7) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 121, 107, 0.8) 0%,
+    rgba(2, 136, 209, 0.7) 100%
+  );
   transition: all 0.3s ease;
 }
 
 .mission-card:hover .mission-overlay {
-  background: linear-gradient(135deg, rgba(0, 121, 107, 0.9) 0%, rgba(2, 136, 209, 0.8) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 121, 107, 0.9) 0%,
+    rgba(2, 136, 209, 0.8) 100%
+  );
 }
 
 .mission-content {
