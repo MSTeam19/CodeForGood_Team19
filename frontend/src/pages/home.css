@@ -3,7 +3,6 @@
 /* Global overflow prevention - more aggressive */
 * {
   box-sizing: border-box;
-  max-width: 100% !important;
 }
 
 html, body {
@@ -25,15 +24,15 @@ html, body {
   width: 100% !important;
 }
 
-/* Ensure all child elements respect viewport */
-.hero-section *,
-.thermometer-section *,
-.champion-spotlight *,
-.impact-stories-section *,
-.stats-section *,
-.mission-section *,
-.cta-section * {
-  max-width: 100% !important;
+/* Ensure specific elements respect viewport */
+.hero-content,
+.thermometer-widget,
+.champion-card-spotlight,
+.stories-grid,
+.stats-grid,
+.mission-grid,
+.cta-content {
+  max-width: 100%;
 }
 
 /* Force immediate overflow hiding on page load */
@@ -280,6 +279,9 @@ html, body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .stat-card {
@@ -290,6 +292,14 @@ html, body {
   transition: all 0.3s ease;
   opacity: 0;
   transform: translateY(30px);
+  text-align: center;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .stat-card.animate {
@@ -305,6 +315,7 @@ html, body {
 .stat-icon-large {
   font-size: 3.5rem;
   margin-bottom: 20px;
+  display: block;
 }
 
 .stat-number-large {
@@ -313,12 +324,17 @@ html, body {
   color: #00796b;
   display: block;
   margin-bottom: 10px;
+  line-height: 1.1;
 }
 
 .stat-label-large {
   color: #00796b;
   font-weight: 700;
   font-size: 1.1rem;
+  display: block;
+  line-height: 1.3;
+  text-align: center;
+  word-wrap: break-word;
 }
 
 .stats-section .stat-card .stat-label-large {
@@ -428,7 +444,7 @@ div.stats-section div.stat-card div.stat-label-large {
   font-size: 1.2rem;
   line-height: 1.6;
   margin-bottom: 40px;
-  color: #e0f2fd;
+  color: white !important;
 }
 
 .cta-actions {
@@ -775,16 +791,19 @@ div.stats-section div.stat-card div.stat-label-large {
 }
 
 .champion-widget {
-  margin-top: 60px;
+  margin-top: 40px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .champion-card-spotlight {
   display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 30px;
+  grid-template-columns: 180px 1fr;
+  gap: 25px;
   background: white;
-  padding: 40px;
-  border-radius: 24px;
+  padding: 30px;
+  border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0, 121, 107, 0.15);
   text-align: left;
   position: relative;
@@ -811,73 +830,85 @@ div.stats-section div.stat-card div.stat-label-large {
 }
 
 .champion-avatar-large {
-  width: 160px;
-  height: 160px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   background: linear-gradient(135deg, #00796b 0%, #0288d1 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 800;
   color: white;
-  margin: 0 auto 20px;
+  margin: 0 auto 15px;
   box-shadow: 0 15px 40px rgba(0, 121, 107, 0.3);
   animation: float 3s ease-in-out infinite;
 }
 
+.champion-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
 .champion-name {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #00796b;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .champion-role {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #0288d1;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .champion-quote {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-style: italic;
   color: #424242;
   border-left: 4px solid #0288d1;
-  padding-left: 20px;
-  margin: 20px 0;
-  line-height: 1.6;
+  padding-left: 15px;
+  margin: 15px 0;
+  line-height: 1.5;
 }
 
 .champion-impact {
-  margin: 25px 0;
+  margin: 20px 0;
 }
 
 .impact-stat {
   display: inline-block;
   background: linear-gradient(135deg, #e0f2fd 0%, #b2dfdb 100%);
   color: #00796b;
-  padding: 12px 24px;
-  border-radius: 25px;
+  padding: 10px 20px;
+  border-radius: 20px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .champion-actions {
   display: flex;
   gap: 15px;
-  margin-top: 30px;
+  margin-top: 25px;
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px;
 }
 
 .join-champions-btn, .view-all-btn {
   padding: 14px 28px;
-  border-radius: 50px;
+  border-radius: 30px;
   font-weight: 600;
   text-decoration: none;
   font-size: 1rem;
   transition: all 0.3s ease;
   display: inline-block;
+  text-align: center;
+  min-width: 140px;
 }
 
 .join-champions-btn {
@@ -919,13 +950,6 @@ div.stats-section div.stat-card div.stat-label-large {
   transform: translateY(-12px) scale(1.02);
 }
 
-.stat-card {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.stat-card:hover {
-  transform: translateY(-15px) rotateY(5deg);
-}
 
 .hero-btn-primary, .hero-btn-secondary {
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
